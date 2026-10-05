@@ -39,8 +39,10 @@ export function Hero() {
         <div className="md:col-span-7">
           <h1 className="hero-title display text-[clamp(2.25rem,1.1rem+4vw,3.5rem)] leading-[1.06] max-md:mt-[26dvh]">
             {lines.map((l, i) => (
-              <span key={i} className="hero-line hero-in block" style={delay(i * 90)}>
-                {l}
+              <span key={i} className="hero-line block">
+                <span className="hero-line-in block" style={delay(i * 90)}>
+                  {l}
+                </span>
               </span>
             ))}
           </h1>
@@ -64,7 +66,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="hero-card hero-in md:col-span-5 md:justify-self-end lg:col-span-4 lg:col-start-9" style={delay(600)}>
+        <div className="hero-card hero-in md:col-span-5 md:justify-self-end lg:col-span-4 lg:col-start-9" style={delay(420)}>
           <LeadForm variant="quote" id="cotiza" className="w-full scroll-mt-24 md:max-w-[420px]" />
         </div>
       </div>

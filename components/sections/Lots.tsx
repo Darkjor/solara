@@ -17,14 +17,16 @@ export function Lots() {
       <div className="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
         <figure className="lots-photo reveal lg:col-span-5">
           <div className="lg:sticky lg:top-24">
-            <Image
-              src="/img/render-fachada-5-vertical.webp"
-              alt={t("renderAlt")}
-              width={1478}
-              height={2170}
-              sizes="(min-width:1024px) 40vw, 92vw"
-              className="aspect-[16/10] w-full rounded-lg object-cover object-[50%_40%] lg:aspect-[4/5]"
-            />
+            <div className="overflow-hidden rounded-lg">
+              <Image
+                src="/img/render-fachada-5-vertical.webp"
+                alt={t("renderAlt")}
+                width={1478}
+                height={2170}
+                sizes="(min-width:1024px) 40vw, 92vw"
+                className="lots-img aspect-[16/10] w-full object-cover object-[50%_40%] lg:aspect-[4/5]"
+              />
+            </div>
             <figcaption className="t-small mt-3 text-tinta-600">{t("renderCaption")}</figcaption>
           </div>
         </figure>

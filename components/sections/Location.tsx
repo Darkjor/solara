@@ -15,7 +15,11 @@ export function Location() {
         <p className="t-label reveal text-tierra-600">{t("eyebrow")}</p>
         <h2 className="t-h2 display reveal mt-4">{t("title")}</h2>
         <p className="t-lead reveal prose-measure mt-5 text-tinta-900">{t("lead")}</p>
-        <LocationMap />
+        <div className="location-track mt-12">
+          <div className="location-stage">
+            <LocationMap />
+          </div>
+        </div>
         <p className="t-small mt-8 max-w-[62ch] text-tinta-600">{t("note")}</p>
       </div>
     </section>

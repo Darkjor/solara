@@ -14,10 +14,10 @@ export function FinalCta() {
       <Image
         src="/img/hoja-monstera.webp"
         alt=""
-        width={668}
-        height={1000}
-        sizes="200px"
-        className="pointer-events-none absolute -bottom-6 right-4 -z-10 hidden h-64 w-auto drop-shadow-[0_12px_20px_rgba(14,32,20,0.45)] lg:block"
+        width={552}
+        height={514}
+        sizes="360px"
+        className="pointer-events-none absolute -right-2 -bottom-4 -z-10 hidden h-auto w-[300px] xl:w-[360px] lg:block"
       />
       <div className="wrap py-16 lg:py-24">
         <h2 className="t-h2 display reveal max-w-[18ch]">{t("title")}</h2>

@@ -14,14 +14,19 @@ export function LocationMap() {
   const byKey = Object.fromEntries(times.map((x) => [x.key, x])) as Record<TimeKey, (typeof times)[number]>;
 
   return (
-    <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-8">
-      <div className="location-map stone-soft relative self-start overflow-hidden bg-selva-950 lg:col-span-8" data-map>
-        <Image src="/img/mapa-ubicacion.webp" alt={t("mapAlt")} width={3600} height={2026} sizes="(min-width:1024px) 66vw, 100vw" className="h-auto w-full" />
+    <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-8">
+      <div className="location-map relative self-start overflow-hidden rounded-lg bg-selva-950 lg:col-span-8" data-map>
+        <Image src="/img/mapa-ubicacion.webp" alt={t("mapAlt")} width={3600} height={2026} sizes="(min-width:1024px) 66vw, 100vw" className="location-local h-auto w-full" />
+        {/* Mapa regional del brochure: solo lo muestra la escena M4 (clase scene-live o scene-lite). */}
+        <div className="location-regional" aria-hidden>
+          <Image src="/img/mapa-quintana-roo.webp" alt="" fill sizes="(min-width:1024px) 66vw, 100vw" className="object-cover object-[50%_63%]" />
+        </div>
         <ul aria-hidden className="absolute inset-0">
           {times.map((x) => (
             <li
               key={x.key}
               data-hotspot={x.key}
+              data-min={x.min}
               className="absolute"
               style={{ left: `${x.x}%`, top: `${x.y}%` }}
             >
@@ -47,6 +52,7 @@ export function LocationMap() {
                     <button
                       type="button"
                       data-time-row={k}
+                      data-min={byKey[k].min}
                       onMouseEnter={() => setActive(k)}
                       onMouseLeave={() => setActive(null)}
                       onFocus={() => setActive(k)}

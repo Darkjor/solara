@@ -15,8 +15,8 @@ export function Brokers() {
         src="/img/textura-sombra-palma.webp"
         alt=""
         fill
-        sizes="50vw"
-        className="-z-10 object-cover object-center opacity-30 max-lg:hidden [mask-image:linear-gradient(90deg,#000,transparent_60%)]"
+        sizes="100vw"
+        className="-z-10 object-cover object-[50%_40%] opacity-70 [mask-image:linear-gradient(90deg,#000_25%,transparent_95%)] max-lg:opacity-55 max-lg:[mask-image:linear-gradient(180deg,#000_30%,transparent_95%)]"
       />
       <div className="wrap grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
         <div className="lg:col-span-6">

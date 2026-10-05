@@ -13,7 +13,7 @@ import { whatsappLink } from "@/lib/whatsapp";
 const MIN = 1;
 const MAX = 4;
 
-export function PlanViewer() {
+export function PlanViewer({ children }: { children?: React.ReactNode }) {
   const t = useTranslations("availability");
   const wrap = useRef<HTMLDivElement>(null);
   const layer = useRef<HTMLDivElement>(null);
@@ -95,6 +95,7 @@ export function PlanViewer() {
     <div
       ref={wrap}
       data-plan-viewer
+      data-zoomed={zoom > 1}
       role="group"
       aria-roledescription={t("viewerLabel")}
       aria-label={t("mapAlt")}
@@ -132,7 +133,7 @@ export function PlanViewer() {
       }}
       onPointerUp={() => (drag.current = null)}
       onPointerCancel={() => (drag.current = null)}
-      className={`plan-viewer relative aspect-[1694/1165] w-full select-none max-sm:aspect-[4/3] overflow-hidden rounded-lg bg-selva-950 ${zoom > 1 ? "cursor-grab touch-none active:cursor-grabbing" : "touch-pan-y"} ${full ? "!aspect-auto h-dvh rounded-none" : ""}`}
+      className={`plan-viewer group relative aspect-[1694/1165] w-full select-none max-sm:aspect-[4/3] lg:aspect-[1.62] overflow-hidden rounded-lg bg-selva-950 ${zoom > 1 ? "cursor-grab touch-none active:cursor-grabbing" : "touch-pan-y"} ${full ? "!aspect-auto h-dvh rounded-none" : ""}`}
     >
       {!loaded && !failed && (
         <div role="status" aria-label={t("loading")} className="absolute inset-0 animate-pulse bg-selva-900" />
@@ -160,7 +161,7 @@ export function PlanViewer() {
         </div>
       )}
 
-      <div ref={layer} className="absolute inset-0 origin-center bg-selva-950 will-change-transform">
+      <div ref={layer} data-plan-layer className="absolute inset-0 origin-center bg-selva-950 will-change-transform">
         {!failed && (
           <Image
             key={attempt}
@@ -172,12 +173,14 @@ export function PlanViewer() {
             draggable={false}
             onLoad={() => setLoaded(true)}
             onError={() => setFailed(true)}
-            className="pointer-events-none object-contain mix-blend-lighten"
+            className="pointer-events-none object-cover object-[50%_58%] mix-blend-lighten max-sm:object-contain"
           />
         )}
       </div>
 
-      <div className="absolute right-3 bottom-3 flex flex-col gap-2">
+      <div className="transition-opacity duration-300 group-data-[zoomed=true]:pointer-events-none group-data-[zoomed=true]:opacity-0">{children}</div>
+
+      <div data-plan-controls className="absolute top-3 right-3 z-10 flex flex-col gap-2">
         <button type="button" className={btn} onClick={() => zoomBy(1.4)} aria-label={t("zoomIn")} aria-disabled={zoom >= MAX}>
           <MagnifyingGlassPlus size={22} aria-hidden />
         </button>

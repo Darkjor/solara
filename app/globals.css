@@ -266,17 +266,6 @@
     border: 2px solid var(--color-error-700);
   }
 
-  /* Recorte "piedra": polígono orgánico inspirado en la losa de la portada.
-     Solo en Concepto, Ubicación y la intro del hero. */
-  .stone {
-    clip-path: polygon(7% 3%, 36% 0%, 71% 2%, 96% 12%, 100% 50%, 95% 88%, 66% 100%, 31% 97%, 4% 91%, 0% 42%);
-  }
-
-  /* Variante suave para el mapa (no debe cortar los pines de los bordes). */
-  .stone-soft {
-    clip-path: polygon(1.5% 1.5%, 36% 0%, 71% 0.5%, 99% 3%, 100% 50%, 99% 97%, 66% 100%, 31% 99%, 1% 97%, 0% 42%);
-  }
-
   /* Revelado simple de entrada. Sin JS (o sin la clase) el contenido se ve. */
   .reveal-ready .reveal {
     opacity: 0;
@@ -297,20 +286,62 @@
     }
   }
 
-  /* Entrada del hero (CSS, una vez). */
+  /* M0, intro del hero. Solo la primera visita de la sesión: el script del
+     <head> pone `hero-intro` en <html> (nunca con movimiento reducido ni sin
+     JS). Sin esa clase el hero se ve en su estado final. La foto ya está
+     pintada: la losa solo la descubre (clip-path), así no retrasa el LCP. */
   @keyframes hero-in {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(24px);
     }
     to {
       opacity: 1;
       transform: none;
     }
   }
-  .hero-in {
+  @keyframes hero-slab {
+    from {
+      clip-path: polygon(8% 12%, 30% 9%, 70% 9%, 92% 12%, 94% 50%, 92% 88%, 70% 91%, 30% 91%, 8% 88%, 6% 50%);
+    }
+    to {
+      clip-path: polygon(0 0, 30% 0, 70% 0, 100% 0, 100% 50%, 100% 100%, 70% 100%, 30% 100%, 0 100%, 0 50%);
+    }
+  }
+  @keyframes hero-zoom {
+    from {
+      transform: scale(1.08);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  @keyframes hero-line {
+    from {
+      transform: translateY(108%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  .hero-line {
+    overflow: hidden;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+  .hero-intro .hero-media {
+    animation: hero-slab 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .hero-intro .hero-media img {
+    animation: hero-zoom 2.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .hero-intro .hero-line-in {
+    animation: hero-line 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(0.1s + var(--d, 0ms));
+  }
+  .hero-intro .hero-in {
     animation: hero-in 0.8s var(--ease-out-soft) both;
-    animation-delay: var(--d, 0ms);
+    animation-delay: calc(0.1s + var(--d, 0ms));
   }
 
   /* Acordeón FAQ: <details> nativo. */
@@ -330,6 +361,10 @@
   }
   .scrim-top {
     background: linear-gradient(180deg, oklch(0.21 0.04 152 / 0.55) 0%, oklch(0.21 0.04 152 / 0) 22%);
+  }
+  /* Escrim para texto blanco sobre foto clara: >= 0.7 de selva bajo el texto (AA). */
+  .scrim-text {
+    background: linear-gradient(0deg, oklch(0.21 0.04 152 / 0.94) 0%, oklch(0.21 0.04 152 / 0.82) 38%, oklch(0.21 0.04 152 / 0.5) 62%, oklch(0.21 0.04 152 / 0) 92%);
   }
   .scrim-bottom {
     background: linear-gradient(0deg, oklch(0.21 0.04 152 / 0.72) 0%, oklch(0.21 0.04 152 / 0) 60%);
@@ -401,4 +436,123 @@
     background: rgb(255 255 255 / 0.7);
     animation: bar 1.1s linear infinite;
   }
+}
+
+/* Escenas de scroll (fase 2). Los estados fijos u ocultos cuelgan de
+   `scene-live` / `scene-lite`, clases que solo pone components/motion/Scenes.tsx
+   con GSAP ya cargado: sin ellas la página es la versión completa y estática. */
+@layer components {
+  /* M1. Concepto */
+  .concept-track,
+  .concept-stage {
+    display: none;
+  }
+  .scene-live .concept-stack {
+    display: none;
+  }
+  .scene-live .concept-track {
+    display: block;
+    height: 360vh;
+    margin-top: 3rem;
+  }
+  .scene-live .concept-stage {
+    display: block;
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    padding-top: var(--header-h);
+  }
+  .concept-lines li {
+    opacity: 0.5;
+    transition: opacity 0.5s var(--ease-out-soft);
+  }
+  .concept-guides {
+    display: grid;
+    min-height: 7.5rem;
+  }
+  .concept-guides > p {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 0.5s var(--ease-out-soft),
+      transform 0.5s var(--ease-out-soft);
+  }
+  .concept-caption {
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-out-soft);
+  }
+  .concept-stage[data-step="1"] [data-line="1"],
+  .concept-stage[data-step="2"] [data-line="2"],
+  .concept-stage[data-step="3"] [data-line="3"],
+  .concept-stage[data-step="3"] .concept-caption {
+    opacity: 1;
+  }
+  .concept-stage[data-step="1"] [data-guide="1"],
+  .concept-stage[data-step="2"] [data-guide="2"],
+  .concept-stage[data-step="3"] [data-guide="3"] {
+    opacity: 1;
+    transform: none;
+  }
+  .concept-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    max-width: 24rem;
+  }
+  .concept-seg {
+    display: block;
+    height: 3px;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--color-tinta-900) 14%, transparent);
+  }
+  .concept-seg-fill {
+    display: block;
+    height: 100%;
+    background: var(--color-tierra-600);
+    transform-origin: left center;
+  }
+
+  /* M3. El trazo del isotipo solo existe durante la escena. */
+  .inv-iso {
+    opacity: 0;
+  }
+  .inv-frame {
+    background: transparent;
+  }
+
+  /* M4. Mapa regional encima del local, solo con la escena armada. */
+  .location-regional {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: var(--color-arena-100);
+    will-change: transform, opacity;
+  }
+  .scene-live .location-regional,
+  .scene-lite .location-regional {
+    display: block;
+  }
+  @media (min-width: 1024px) and (min-height: 640px) {
+    .scene-live .location-track {
+      height: 260vh;
+      margin-top: 2rem;
+    }
+    .scene-live .location-stage {
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      min-height: 100dvh;
+      padding-block: calc(var(--header-h) + 16px) 24px;
+    }
+    .scene-live .location-stage > div {
+      width: 100%;
+    }
+  }
+}
+
+/* El trazo del isotipo de M3 crece más allá del marco: se recorta en la sección. */
+[data-scene="investment"] {
+  overflow-x: clip;
 }

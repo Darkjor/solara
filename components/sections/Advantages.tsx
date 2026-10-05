@@ -60,10 +60,10 @@ export function Advantages() {
           </article>
 
           {/* B: esquemas flexibles, foto */}
-          <article className="reveal relative isolate min-h-[320px] overflow-hidden rounded-lg lg:col-span-5" style={delay(60)}>
+          <article className="reveal relative isolate min-h-[360px] overflow-hidden rounded-lg lg:col-span-5" style={delay(60)}>
             <Image src="/img/lifestyle-playa-pareja.webp" alt={t("flexAlt")} fill sizes="(min-width:1024px) 40vw, 92vw" className="-z-10 object-cover object-[50%_40%]" />
-            <div className="scrim-bottom absolute inset-0 -z-10" />
-            <div className="on-dark flex h-full min-h-[320px] flex-col justify-end p-6 text-hueso">
+            <div className="scrim-text absolute inset-0 -z-10" />
+            <div className="on-dark flex h-full min-h-[360px] flex-col justify-end p-6 text-hueso">
               <h3 className="display t-h3">{t("flexTitle")}</h3>
               <p className="mt-2 max-w-[40ch]">{t("flexText")}</p>
             </div>

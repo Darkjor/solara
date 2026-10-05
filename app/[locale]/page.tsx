@@ -9,6 +9,7 @@ import { Availability } from "@/components/sections/Availability";
 import { Brokers } from "@/components/sections/Brokers";
 import { Faq } from "@/components/sections/Faq";
 import { FinalCta } from "@/components/sections/FinalCta";
+import { Scenes } from "@/components/motion/Scenes";
 
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
@@ -26,6 +27,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <Brokers />
       <Faq />
       <FinalCta />
+      <Scenes />
     </>
   );
 }

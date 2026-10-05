@@ -275,7 +275,7 @@ export function LeadForm({ variant, id, className = "" }: { variant: Variant; id
           <span>
             {(isBroker ? tb : tq).rich("privacy", {
               link: (chunks) => (
-                <Link href="/aviso-de-privacidad" className="link-action !font-normal" target="_blank">
+                <Link href="/aviso-de-privacidad" className="link-action !font-normal !text-tierra-600" target="_blank">
                   {chunks}
                 </Link>
               ),

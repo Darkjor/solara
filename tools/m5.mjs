@@ -1,0 +1,14 @@
+import { chromium } from "playwright-core";
+import { exe } from "./exe.mjs";
+const [w, h, out, base] = process.argv.slice(2);
+const b = await chromium.launch({ executablePath: exe });
+const p = await (await b.newContext({ viewport: { width: +w, height: +h } })).newPage();
+await p.goto(base + "/es", { waitUntil: "networkidle" });
+await p.addStyleTag({ content: "html{scroll-behavior:auto!important}" });
+await p.waitForTimeout(5200);
+await p.evaluate(() => { const el = document.querySelector("[data-plan-viewer]"); window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.4); });
+await p.waitForTimeout(650);
+await p.screenshot({ path: `${out}/es-${w}-m5-mid.png` });
+await p.waitForTimeout(2200);
+await p.screenshot({ path: `${out}/es-${w}-m5-final.png` });
+await b.close();
