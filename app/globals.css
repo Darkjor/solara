@@ -387,7 +387,7 @@
   }
   /* Escrim para texto blanco sobre foto clara: >= 0.7 de selva bajo el texto (AA). */
   .scrim-text {
-    background: linear-gradient(0deg, oklch(0.21 0.04 152 / 0.94) 0%, oklch(0.21 0.04 152 / 0.82) 38%, oklch(0.21 0.04 152 / 0.5) 62%, oklch(0.21 0.04 152 / 0) 92%);
+    background: linear-gradient(0deg, oklch(0.21 0.04 152 / 0.94) 0%, oklch(0.21 0.04 152 / 0.82) 38%, oklch(0.21 0.04 152 / 0.7) 62%, oklch(0.21 0.04 152 / 0.3) 80%, oklch(0.21 0.04 152 / 0) 100%);
   }
   .scrim-bottom {
     background: linear-gradient(0deg, oklch(0.21 0.04 152 / 0.72) 0%, oklch(0.21 0.04 152 / 0) 60%);

@@ -24,7 +24,7 @@ export function Location() {
             </>
           }
         />
-        <p className="t-small mt-8 max-w-[62ch] text-tinta-600">{t("note")}</p>
+        <p className="t-small mt-8 max-w-[62ch] text-tinta-900/80">{t("note")}</p>
       </div>
     </section>
   );

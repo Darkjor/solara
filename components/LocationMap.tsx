@@ -48,7 +48,7 @@ export function LocationMap({ head }: { head: ReactNode }) {
                   <Icon size={22} weight="light" aria-hidden />
                 </span>
                 <span className="flex-1">{t(key)}</span>
-                <span className="num shrink-0 font-semibold text-tierra-600">{t("minutes", { n: String(min).padStart(2, "0") })}</span>
+                <span className="num shrink-0 font-semibold text-tierra-700">{t("minutes", { n: String(min).padStart(2, "0") })}</span>
               </button>
             </li>
           ))}
