@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { CaretDown } from "@phosphor-icons/react/ssr";
 import { whatsappLink } from "@/lib/whatsapp";
 
-const KEYS = [1, 2, 3, 4, 5, 6, 7, 8] as const;
+const KEYS = [1, 2, 3, 4, 5, 6] as const;
 
 /** FAQ: <details> nativo (una abierta a la vez con `name`) + JSON-LD FAQPage. */
 export function Faq() {
@@ -24,7 +24,6 @@ export function Faq() {
       <div className="wrap">
         <div className="mx-auto max-w-[56rem]">
           <h2 className="t-h2 display reveal">{t("title")}</h2>
-          <p className="t-lead reveal prose-measure mt-4 text-tinta-900">{t("lead")}</p>
           <div className="mt-10">
             {KEYS.map((n) => (
               <details key={n} name="faq" className="group border-b border-tinta-900/12">

@@ -6,8 +6,8 @@ const delay = (ms: number) => ({ ["--d" as string]: `${ms}ms` });
 /**
  * Destino. Ganchos para M4: `[data-scene="location"]`, `.location-map` (mapa
  * local con hotspots `[data-hotspot]`) y las filas `[data-time-row]` (contenido
- * real; la imagen es apoyo). Sin escena fija: el zoom regional a local ocurre
- * una sola vez al entrar.
+ * real; la imagen es apoyo). Sin escena fija: el mapa se acerca de 1.35 a 1
+ * una sola vez al entrar (`.location-local`).
  */
 export function Location() {
   const t = useTranslations("location");

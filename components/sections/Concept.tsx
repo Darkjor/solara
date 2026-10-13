@@ -15,7 +15,7 @@ export function Concept() {
   const phases = [
     { n: 1, src: "/img/lifestyle-terraza.webp", alt: t("alt1"), w: 1401, h: 2100, title: t("title"), text: t("lead") },
     { n: 2, src: "/img/logo-muro-piedra.webp", alt: t("alt2"), w: 912, h: 1168, title: t("meaningTitle"), text: t("meaningText") },
-    { n: 3, src: "/img/render-fachada-4-vertical.webp", alt: t("alt3"), w: 1478, h: 2170, title: t("byTitle"), text: t("byText") },
+    { n: 3, src: "/img/render-fachada-4-vertical.webp", alt: t("alt3"), w: 1478, h: 2170, title: t("byTitle"), text: null },
   ] as const;
   const brochure = (
     <a href={site.brochureUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary mt-7">
@@ -50,7 +50,7 @@ export function Concept() {
             ) : (
               <h3 className="t-h3 display mt-6 text-tinta-900">{p.title}</h3>
             )}
-            <p className="mt-3 max-w-[34ch] text-tinta-900">{p.text}</p>
+            {p.text && <p className="mt-3 max-w-[34ch] text-tinta-900">{p.text}</p>}
             {p.n === 3 && brochure}
           </article>
         ))}
@@ -69,7 +69,7 @@ export function Concept() {
                     ) : (
                       <h3 className="t-h2 display max-w-[14ch] text-tinta-900">{p.title}</h3>
                     )}
-                    <p className="t-lead mt-5 max-w-[36ch] text-tinta-900">{p.text}</p>
+                    {p.text && <p className="t-lead mt-5 max-w-[36ch] text-tinta-900">{p.text}</p>}
                     {p.n === 3 && brochure}
                   </div>
                 ))}

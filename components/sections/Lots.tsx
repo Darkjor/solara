@@ -18,7 +18,6 @@ export function Lots() {
       <div className="wrap grid gap-6 lg:grid-cols-12 lg:gap-8">
         <article className="reveal rounded-lg border border-tinta-900/12 bg-white p-6 shadow-[var(--e1)] sm:p-8 lg:col-span-7">
           <h2 className="t-h2 display max-w-[20ch]">{t("title")}</h2>
-          <p className="t-lead mt-4 max-w-[48ch] text-tinta-900">{t("lead")}</p>
 
           <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-[1.3fr_1fr_1fr]">
             <div className="col-span-2 sm:col-span-1">
@@ -50,7 +49,6 @@ export function Lots() {
             <div className="scrim-text absolute inset-0 -z-10" />
             <div className="on-dark absolute inset-x-0 bottom-0 p-6 text-hueso sm:p-8">
               <p className="display t-h3">{t("renderTitle")}</p>
-              <p className="mt-2 max-w-[40ch] text-[0.9375rem]">{t("renderNote")}</p>
             </div>
           </div>
           <figcaption className="t-small mt-3 text-tinta-600">{t("renderCaption")}</figcaption>

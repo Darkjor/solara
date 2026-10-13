@@ -57,10 +57,6 @@ export function LocationMap({ head }: { head: ReactNode }) {
 
       <div className="location-map relative self-start overflow-hidden rounded-lg bg-selva-950 lg:col-span-7 lg:col-start-1 lg:row-start-1" data-map>
         <Image src="/img/mapa-ubicacion.webp" alt={t("mapAlt")} width={3600} height={2026} sizes="(min-width:1024px) 58vw, 100vw" className="location-local h-auto w-full" />
-        {/* Mapa regional del brochure: solo lo muestra la escena M4 (clase scene-live). */}
-        <div className="location-regional" aria-hidden>
-          <Image src="/img/mapa-quintana-roo.webp" alt="" fill sizes="(min-width:1024px) 58vw, 100vw" className="object-cover object-[50%_63%]" />
-        </div>
         <ul aria-hidden className="absolute inset-0">
           {spots.map((x) => (
             <li key={x.key} data-hotspot={x.key} data-min={x.min} className="absolute" style={{ left: `${x.x}%`, top: `${x.y}%` }}>

@@ -110,7 +110,13 @@ export function Scenes() {
         const iso = q(".inv-iso");
         const invTrack = q(".inv-track");
         const invFig = q(".investment-photo");
+        const invSection = q("[data-scene=investment]");
         if (inv && iso && invTrack && invFig) {
+          // La pista de 160vh y el sticky solo existen con la escena armada (escritorio con movimiento).
+          if (wide && invSection) {
+            invSection.classList.add("scene-live");
+            undo.push(() => invSection.classList.remove("scene-live"));
+          }
           const tl = gsap.timeline({
             defaults: { ease: "none" },
             scrollTrigger: wide
@@ -122,23 +128,18 @@ export function Scenes() {
           if (wide) tl.to({}, { duration: 0.25 });
         }
 
-        /* M4. Del Caribe al lote, una sola vez al entrar (sin escena fija): zoom regional a local y hotspots en cascada. */
+        /* M4. Mapa de Mahahual, una sola vez al entrar: acercamiento de 1.35 a 1 y hotspots y filas en cascada. */
         const loc = q("[data-scene=location]");
-        const regional = q(".location-regional");
         const local = q(".location-local");
         const locMap = q(".location-map");
-        if (loc && regional && local && locMap) {
+        if (loc && local && locMap) {
           const rows = qa("[data-time-row]");
           const spots = qa("[data-hotspot]");
-          loc.classList.add("scene-live");
-          gsap.set(regional, { opacity: 1, scale: 1, transformOrigin: "59.9% 50%" });
-          gsap.set(local, { scale: 1.35 });
+          gsap.set(local, { scale: 1.35, transformOrigin: "53% 60%" });
           gsap.set(spots, { opacity: 0, scale: 0.4 });
           gsap.set(rows, { opacity: 0, y: 14 });
           const order = [...rows].sort((a, b) => Number(a.dataset.min) - Number(b.dataset.min));
           const tl = gsap.timeline({ paused: true });
-          tl.to(regional, { scale: 2.8, duration: 1.2, ease: "power2.inOut" }, 0);
-          tl.to(regional, { opacity: 0, duration: 0.5, ease: "power1.in" }, 0.7);
           tl.to(local, { scale: 1, duration: 1.2, ease: "power2.out" }, 0);
           order.forEach((row, i) => {
             const at = 1.05 + i * 0.16;
@@ -147,7 +148,6 @@ export function Scenes() {
             tl.to(row, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, at);
           });
           ScrollTrigger.create({ trigger: locMap, start: "top 75%", once: true, onEnter: () => tl.play() });
-          undo.push(() => loc.classList.remove("scene-live"));
         }
 
         /* M5. Barrido del plano, una vez, al 35% de visibilidad. */

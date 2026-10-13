@@ -18,8 +18,7 @@ export function Availability() {
         <p data-count={lotCount} className="display t-display-1 num leading-none text-tierra-300">
           {lotCount}
         </p>
-        <p className="mt-3 text-hueso">{t("text")}</p>
-        <p className="mt-2 text-hueso">{t("water")}</p>
+        <p className="mt-3 text-hueso">{t("water")}</p>
         <a href={whatsappLink(t("wa"))} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-5 w-full lg:w-auto">
           {t("cta")}
         </a>

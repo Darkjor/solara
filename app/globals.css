@@ -542,21 +542,290 @@
   .inv-frame {
     background: transparent;
   }
-
-  /* M4. Mapa regional encima del local, solo con la escena armada (se juega una vez al entrar). */
-  .location-regional {
-    display: none;
-    position: absolute;
-    inset: 0;
-    background: var(--color-arena-100);
-    will-change: transform, opacity;
+  /* La pista de 160vh y el sticky solo existen con la escena armada (clase scene-live,
+     que pone Scenes.tsx en escritorio con movimiento). Reducido, sin JS y movil: bloque normal. */
+  .scene-live .inv-track {
+    height: 160vh;
   }
-  .scene-live .location-regional {
-    display: block;
+  .scene-live .inv-stage {
+    position: sticky;
+    top: 0;
+    display: flex;
+    height: 100dvh;
+    align-items: center;
   }
 }
 
 /* El trazo del isotipo de M3 crece más allá del marco: se recorta en la sección. */
 [data-scene="investment"] {
   overflow-x: clip;
+}
+
+/* Vivir y Galeria (estructura ZAMA, parte 2). */
+@layer components {
+  /* Entrada con la losa: el recorte poligonal de 10 puntos de M0 se abre una sola vez
+     (.reveal pone is-visible al entrar a pantalla). Sin JS no hay reveal-ready y la
+     foto se ve completa. Movimiento reducido: sin recorte. */
+  .reveal-ready .reveal.slab-reveal {
+    opacity: 1;
+    transform: none;
+    clip-path: polygon(8% 12%, 30% 9%, 70% 9%, 92% 12%, 94% 50%, 92% 88%, 70% 91%, 30% 91%, 8% 88%, 6% 50%);
+    transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0ms);
+  }
+  .reveal-ready .reveal.slab-reveal.is-visible {
+    clip-path: polygon(0% 0%, 30% 0%, 70% 0%, 100% 0%, 100% 50%, 100% 100%, 70% 100%, 30% 100%, 0% 100%, 0% 50%);
+  }
+  .reveal-ready .slab-reveal img {
+    transform: scale(1.08);
+    transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0ms);
+  }
+  .reveal-ready .slab-reveal.is-visible img {
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-ready .reveal.slab-reveal,
+    .reveal-ready .reveal.slab-reveal.is-visible {
+      clip-path: none;
+      transition: none;
+    }
+    .reveal-ready .slab-reveal img {
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Vivir: fila horizontal libre. Alineada al borde del contenedor y abierta hasta el borde
+     derecho de la ventana. Flechas solo con JS (sin JS es una fila desplazable). */
+  .vivir-nav {
+    display: none;
+  }
+  .reveal-ready .vivir-nav {
+    display: flex;
+    gap: 8px;
+  }
+  .vivir-btn {
+    display: inline-flex;
+    width: 48px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--color-tinta-900);
+    border-radius: var(--r);
+    color: var(--color-tinta-900);
+    cursor: pointer;
+    transition:
+      background-color 0.2s var(--ease-out-soft),
+      opacity 0.2s var(--ease-out-soft);
+  }
+  .vivir-btn:hover {
+    background: color-mix(in oklab, var(--color-tinta-900) 8%, transparent);
+  }
+  .vivir-btn[aria-disabled="true"] {
+    opacity: 0.35;
+    cursor: default;
+  }
+  .vivir-btn[aria-disabled="true"]:hover {
+    background: transparent;
+  }
+  .vivir-row {
+    --pad: 20px;
+    --start: max(var(--pad), calc((100% - 1280px) / 2 + var(--pad)));
+    display: flex;
+    gap: 16px;
+    margin: 32px 0 0;
+    padding: 4px var(--pad) 4px var(--start);
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline-start: var(--start);
+    scrollbar-width: none;
+  }
+  .vivir-row::-webkit-scrollbar {
+    display: none;
+  }
+  .vivir-row:focus-visible {
+    outline-offset: -4px;
+  }
+  @media (min-width: 768px) {
+    .vivir-row {
+      --pad: 24px;
+      gap: 20px;
+      cursor: grab;
+    }
+  }
+  @media (min-width: 1280px) {
+    .vivir-row {
+      --pad: 40px;
+    }
+  }
+  .vivir-row[data-dragging] {
+    scroll-snap-type: none;
+    cursor: grabbing;
+    user-select: none;
+  }
+  .vivir-card {
+    flex: none;
+    width: clamp(250px, 29vw, 380px);
+    scroll-snap-align: start;
+  }
+  .vivir-photo {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--r);
+    background: var(--color-arena-200);
+  }
+
+  /* Galeria. Movil: tira con scroll-snap (swipe). Desde 768: mosaico de dos filas
+     "justificadas" sobre 33 columnas; la altura de cada fila es el ancho entre la suma
+     de formatos de sus fotos (4.46 y 3.34), asi las celdas llenan el ancho sin huecos. */
+  .gal-grid {
+    display: flex;
+    gap: 10px;
+    margin: -4px -20px;
+    padding: 4px 20px;
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 20px;
+    scrollbar-width: none;
+  }
+  .gal-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .gal-cell {
+    flex: none;
+    height: clamp(220px, 62vw, 340px);
+    aspect-ratio: var(--ar);
+    scroll-snap-align: start;
+  }
+  @media (min-width: 768px) {
+    .gal-wrap {
+      container-type: inline-size;
+    }
+    .gal-grid {
+      display: grid;
+      grid-template-columns: repeat(33, minmax(0, 1fr));
+      grid-template-rows: calc((100cqw - 24px) / 4.46) calc((100cqw - 24px) / 3.34);
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      scroll-snap-type: none;
+    }
+    .gal-cell {
+      height: auto;
+      aspect-ratio: auto;
+    }
+  }
+  .gal-open {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: var(--r);
+    background: var(--color-selva-900);
+    cursor: zoom-in;
+  }
+  .gal-open img {
+    transition: transform 0.7s var(--ease-out-soft);
+  }
+  .gal-open:hover img {
+    transform: scale(1.04);
+  }
+
+  /* Visor: <dialog> modal nativo (foco atrapado, Esc, foco devuelto). */
+  .gal-viewer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-hueso);
+  }
+  .gal-viewer::backdrop {
+    background: oklch(0.17 0.03 152 / 0.95);
+  }
+  .gal-viewer[open] {
+    animation: gal-fade 0.25s ease-out;
+  }
+  @keyframes gal-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .gal-view {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: 100%;
+    gap: 8px;
+    padding: 12px 16px 20px;
+  }
+  .gal-top {
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .gal-stage {
+    position: relative;
+    display: flex;
+    min-height: 0;
+    align-items: center;
+    justify-content: center;
+    touch-action: pan-y pinch-zoom;
+  }
+  .gal-img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: var(--r);
+    object-fit: contain;
+    animation: gal-fade 0.25s ease-out;
+  }
+  .gal-btn {
+    display: inline-flex;
+    width: 48px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--color-hueso);
+    border-radius: var(--r);
+    background: oklch(0.21 0.04 152 / 0.7);
+    color: var(--color-hueso);
+    cursor: pointer;
+    transition: background-color 0.2s var(--ease-out-soft);
+  }
+  .gal-btn:hover {
+    background: oklch(0.3 0.05 152 / 0.9);
+  }
+  .gal-prev,
+  .gal-next {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+  }
+  .gal-prev {
+    left: 4px;
+  }
+  .gal-next {
+    right: 4px;
+  }
+}
+html:has(.gal-viewer[open]) {
+  overflow: hidden;
 }

@@ -8,7 +8,7 @@ const delay = (ms: number) => ({ ["--d" as string]: `${ms}ms` });
 
 /**
  * Inversion: certeza juridica + dos tarjetas con foto. M3 (apertura del isotipo):
- * escena `.inv-track` (160vh en escritorio) con `.inv-stage` sticky. La foto va en
+ * escena `.inv-track` (160vh) con `.inv-stage` sticky, solo con la clase `scene-live` (escritorio con movimiento). La foto va en
  * su marco vertical a resolucion nativa (993 px de ancho): nunca se estira a ancho
  * completo. El controlador recorta la foto con un rombo (la forma del isotipo) que
  * se abre hasta llenar el marco mientras el trazo terracota se desvanece. Sin
@@ -19,15 +19,15 @@ export function Investment() {
 
   return (
     <section id="inversion" data-scene="investment" className="bg-hueso">
-      <div className="inv-track lg:h-[160vh]">
-        <div className="inv-stage lg:sticky lg:top-0 lg:flex lg:h-[100dvh] lg:items-center">
-          <div className="wrap grid items-center gap-10 pt-16 lg:grid-cols-12 lg:gap-8 lg:pt-[var(--header-h)]">
+      <div className="inv-track">
+        <div className="inv-stage">
+          <div className="inv-grid wrap grid items-center gap-10 pt-16 lg:grid-cols-12 lg:gap-8 lg:pt-[var(--header-h)]">
             <div className="lg:col-span-5">
               <h2 className="display reveal max-w-[22ch] text-[clamp(1.75rem,1.2rem+1.9vw,2.5rem)] leading-[1.12]">{t("title")}</h2>
               <p className="t-lead reveal prose-measure mt-5 text-tinta-900" style={delay(80)}>
-                {t("lead")}
+                {t("legalText")}
               </p>
-              <ul className="reveal mt-6 grid gap-3" style={delay(120)}>
+              <ul aria-label={t("legalTitle")} className="reveal mt-6 grid gap-3" style={delay(120)}>
                 {(["seal1", "seal2", "seal3"] as const).map((k) => (
                   <li key={k} className="flex items-center gap-3">
                     <ShieldCheck size={26} weight="light" className="shrink-0 text-tierra-600" aria-hidden />
@@ -68,16 +68,15 @@ export function Investment() {
             <div className="scrim-text absolute inset-0 -z-10" />
             <div className="on-dark p-6 text-hueso sm:p-8">
               <h3 className="display t-h3">{t("destinoTitle")}</h3>
-              <p className="mt-2 max-w-[44ch]">{t("destinoText")}</p>
               <ul className="mt-6 grid gap-5 border-t border-hueso/25 pt-5 sm:grid-cols-[1.3fr_1fr]">
                 {([1, 2] as const).map((n) => (
                   <li key={n}>
                     <p className="display num text-[2.25rem] leading-none text-tierra-300 sm:text-[2.75rem]">{t(`stat${n}Value` as "stat1Value")}</p>
                     <p className="mt-2 max-w-[30ch]">{t(`stat${n}Label` as "stat1Label")}</p>
-                    <p className="t-small mt-1">{t(`stat${n}Source` as "stat1Source")}</p>
                   </li>
                 ))}
               </ul>
+              <p className="t-small mt-4">{t("source")}</p>
             </div>
           </article>
 
