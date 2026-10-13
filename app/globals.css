@@ -681,6 +681,9 @@
   /* Galeria. Movil: tira con scroll-snap (swipe). Desde 768: mosaico de dos filas
      "justificadas" sobre 33 columnas; la altura de cada fila es el ancho entre la suma
      de formatos de sus fotos (4.46 y 3.34), asi las celdas llenan el ancho sin huecos. */
+  .gal-wrap {
+    min-width: 0;
+  }
   .gal-grid {
     display: flex;
     gap: 10px;

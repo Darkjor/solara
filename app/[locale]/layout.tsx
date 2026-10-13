@@ -65,6 +65,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     lots: all.lots,
     availability: all.availability,
     location: all.location,
+    gallery: all.gallery,
   };
 
   return (

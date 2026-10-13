@@ -47,6 +47,16 @@ export function Galeria() {
   const cur = open === null ? null : CELLS[open];
 
   function onKeyDown(e: KeyboardEvent<HTMLDialogElement>) {
+    if (e.key === "Tab") {
+      // Trampa de foco explicita: el modal nativo deja salir el foco al navegador.
+      const f = [...e.currentTarget.querySelectorAll<HTMLElement>("button")];
+      if (!f.length) return;
+      const i = f.indexOf(document.activeElement as HTMLElement);
+      const next = e.shiftKey ? (i <= 0 ? f.length - 1 : i - 1) : i === f.length - 1 ? 0 : i + 1;
+      e.preventDefault();
+      f[next].focus();
+      return;
+    }
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
     e.preventDefault();
     step(e.key === "ArrowRight" ? 1 : -1);
