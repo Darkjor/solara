@@ -5,8 +5,9 @@ import { LotCalculator } from "@/components/LotCalculator";
 const delay = (ms: number) => ({ ["--d" as string]: `${ms}ms` });
 
 /**
- * Lotes + calculadora. Ganchos para M2 (fase 2): `[data-scene="lots"]`,
- * `.lots-photo` (parallax) y, en la calculadora, `[data-calc-slider]`,
+ * Lotes, dos columnas: tarjeta del lote con la calculadora y render ilustrativo.
+ * Ganchos para M2: `[data-scene="lots"]`, `.lots-frame` (marco del render, se
+ * revela con la losa) y `.lots-img`; en la calculadora, `[data-calc-slider]`,
  * `[data-calc-price]` y el evento "solara:calc" (detail = m2).
  */
 export function Lots() {
@@ -14,59 +15,46 @@ export function Lots() {
 
   return (
     <section id="lotes" data-scene="lots" className="section bg-hueso">
-      <div className="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
-        <figure className="lots-photo reveal lg:col-span-5">
-          <div className="lg:sticky lg:top-24">
-            <div className="overflow-hidden rounded-lg">
-              <Image
-                src="/img/render-fachada-5-vertical.webp"
-                alt={t("renderAlt")}
-                width={1478}
-                height={2170}
-                sizes="(min-width:1024px) 40vw, 92vw"
-                className="lots-img aspect-[16/10] w-full object-cover object-[50%_40%] lg:aspect-[4/5]"
-              />
+      <div className="wrap grid gap-6 lg:grid-cols-12 lg:gap-8">
+        <article className="reveal rounded-lg border border-tinta-900/12 bg-white p-6 shadow-[var(--e1)] sm:p-8 lg:col-span-7">
+          <h2 className="t-h2 display max-w-[20ch]">{t("title")}</h2>
+          <p className="t-lead mt-4 max-w-[48ch] text-tinta-900">{t("lead")}</p>
+
+          <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-[1.3fr_1fr_1fr]">
+            <div className="col-span-2 sm:col-span-1">
+              <dt className="t-small text-tinta-600">{t("stat4Label")}</dt>
+              <dd className="display num mt-1 text-[1.75rem] leading-tight text-tierra-600 sm:text-[2rem]">{t("stat4Value")}</dd>
             </div>
-            <figcaption className="t-small mt-3 text-tinta-600">{t("renderCaption")}</figcaption>
-          </div>
-        </figure>
-
-        <div className="lg:col-span-7 lg:pl-6">
-          <p className="t-label reveal text-tierra-600">{t("eyebrow")}</p>
-          <h2 className="t-h2 display reveal mt-4" style={delay(60)}>
-            {t("title")}
-          </h2>
-          <p className="t-lead reveal prose-measure mt-5 text-tinta-900" style={delay(120)}>
-            {t("lead")}
-          </p>
-
-          <dl className="reveal mt-10 grid grid-cols-2 gap-y-8 sm:grid-cols-4 sm:divide-x sm:divide-tinta-900/12">
-            {([1, 2, 3, 4] as const).map((n) => (
-              <div key={n} className="sm:px-5 sm:first:pl-0">
-                <dt className="sr-only">{t(`stat${n}Label` as "stat1Label")}</dt>
-                <dd>
-                  <p className="display num text-[1.5rem] leading-tight text-tierra-600 sm:text-[1.625rem]">{t(`stat${n}Value` as "stat1Value")}</p>
-                  <p className="t-small mt-1 text-tinta-900">{t(`stat${n}Label` as "stat1Label")}</p>
-                </dd>
-              </div>
-            ))}
+            <div>
+              <dt className="t-small text-tinta-600">{t("stat2Label")}</dt>
+              <dd className="display num mt-1 text-[1.375rem] leading-tight text-tinta-900">{t("stat2Value")}</dd>
+            </div>
+            <div>
+              <dt className="t-small text-tinta-600">{t("stat3Label")}</dt>
+              <dd className="display num mt-1 text-[1.375rem] leading-tight text-tinta-900">{t("stat3Value")}</dd>
+            </div>
           </dl>
 
           <LotCalculator />
+        </article>
 
-          <div className="mt-14">
-            <h3 className="display t-h3">{t("uses")}</h3>
-            <ul className="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-2">
-              {([1, 2, 3, 4] as const).map((n) => (
-                <li key={n} className="reveal border-t border-tinta-900/12 pt-4">
-                  <p className="font-semibold">{t(`use${n}Title` as "use1Title")}</p>
-                  <p className="mt-1 text-tinta-900">{t(`use${n}Text` as "use1Text")}</p>
-                </li>
-              ))}
-            </ul>
-            <p className="t-small mt-6 max-w-[62ch] text-tinta-600">{t("usesNote")}</p>
+        <figure className="reveal flex flex-col lg:col-span-5" style={delay(80)}>
+          <div className="lots-frame relative isolate min-h-[300px] flex-1 lg:min-h-[360px] overflow-hidden rounded-lg bg-arena-200">
+            <Image
+              src="/img/render-fachada-5-vertical.webp"
+              alt={t("renderAlt")}
+              fill
+              sizes="(min-width:1024px) 40vw, 92vw"
+              className="lots-img -z-10 object-cover object-[50%_40%]"
+            />
+            <div className="scrim-text absolute inset-0 -z-10" />
+            <div className="on-dark absolute inset-x-0 bottom-0 p-6 text-hueso sm:p-8">
+              <p className="display t-h3">{t("renderTitle")}</p>
+              <p className="mt-2 max-w-[40ch] text-[0.9375rem]">{t("renderNote")}</p>
+            </div>
           </div>
-        </div>
+          <figcaption className="t-small mt-3 text-tinta-600">{t("renderCaption")}</figcaption>
+        </figure>
       </div>
     </section>
   );

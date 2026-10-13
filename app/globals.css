@@ -110,7 +110,7 @@
     }
   }
   .section {
-    padding-block: clamp(72px, 10vw, 144px);
+    padding-block: clamp(48px, 7vw, 104px);
   }
 
   .display {
@@ -344,6 +344,29 @@
     animation-delay: calc(0.1s + var(--d, 0ms));
   }
 
+  /* Hero: el eslogan en dos lineas en escritorio. La escala sigue el ancho de la columna de texto (cqw). */
+  .hero-title {
+    font-size: clamp(2.25rem, 1.1rem + 4vw, 3.5rem);
+    line-height: 1.06;
+  }
+  .hero-sent {
+    display: block;
+  }
+  @media (min-width: 1024px) {
+    .hero-copy {
+      container-type: inline-size;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 5.8cqw, 3.5rem);
+    }
+    .hero-sent {
+      display: inline;
+    }
+    .hero-line-in {
+      white-space: nowrap;
+    }
+  }
+
   /* Acordeón FAQ: <details> nativo. */
   details > summary {
     list-style: none;
@@ -442,18 +465,17 @@
    `scene-live` / `scene-lite`, clases que solo pone components/motion/Scenes.tsx
    con GSAP ya cargado: sin ellas la página es la versión completa y estática. */
 @layer components {
-  /* M1. Concepto */
+  /* M1. Concepto en tres fases (consigna, significado, desarrolladora). Sticky corto: 200vh. */
   .concept-track,
   .concept-stage {
     display: none;
   }
   .scene-live .concept-stack {
-    display: none;
+    display: none !important;
   }
   .scene-live .concept-track {
     display: block;
-    height: 360vh;
-    margin-top: 3rem;
+    height: 200vh;
   }
   .scene-live .concept-stage {
     display: block;
@@ -462,37 +484,37 @@
     height: 100dvh;
     padding-top: var(--header-h);
   }
-  .concept-lines li {
-    opacity: 0.5;
-    transition: opacity 0.5s var(--ease-out-soft);
+  /* En vivo la escena trae su propio aire vertical: sin relleno de seccion. */
+  .concept-section.scene-live {
+    padding-block: 0;
   }
-  .concept-guides {
+  .concept-phases {
     display: grid;
-    min-height: 7.5rem;
   }
-  .concept-guides > p {
+  .concept-phase {
     grid-area: 1 / 1;
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
+    visibility: hidden;
     transition:
       opacity 0.5s var(--ease-out-soft),
-      transform 0.5s var(--ease-out-soft);
+      transform 0.5s var(--ease-out-soft),
+      visibility 0s linear 0.5s;
+  }
+  .concept-stage[data-step="1"] [data-phase="1"],
+  .concept-stage[data-step="2"] [data-phase="2"],
+  .concept-stage[data-step="3"] [data-phase="3"] {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    transition-delay: 0s;
   }
   .concept-caption {
     opacity: 0;
     transition: opacity 0.5s var(--ease-out-soft);
   }
-  .concept-stage[data-step="1"] [data-line="1"],
-  .concept-stage[data-step="2"] [data-line="2"],
-  .concept-stage[data-step="3"] [data-line="3"],
   .concept-stage[data-step="3"] .concept-caption {
     opacity: 1;
-  }
-  .concept-stage[data-step="1"] [data-guide="1"],
-  .concept-stage[data-step="2"] [data-guide="2"],
-  .concept-stage[data-step="3"] [data-guide="3"] {
-    opacity: 1;
-    transform: none;
   }
   .concept-bar {
     display: grid;
@@ -521,7 +543,7 @@
     background: transparent;
   }
 
-  /* M4. Mapa regional encima del local, solo con la escena armada. */
+  /* M4. Mapa regional encima del local, solo con la escena armada (se juega una vez al entrar). */
   .location-regional {
     display: none;
     position: absolute;
@@ -529,26 +551,8 @@
     background: var(--color-arena-100);
     will-change: transform, opacity;
   }
-  .scene-live .location-regional,
-  .scene-lite .location-regional {
+  .scene-live .location-regional {
     display: block;
-  }
-  @media (min-width: 1024px) and (min-height: 640px) {
-    .scene-live .location-track {
-      height: 260vh;
-      margin-top: 2rem;
-    }
-    .scene-live .location-stage {
-      position: sticky;
-      top: 0;
-      display: flex;
-      align-items: center;
-      min-height: 100dvh;
-      padding-block: calc(var(--header-h) + 16px) 24px;
-    }
-    .scene-live .location-stage > div {
-      width: 100%;
-    }
   }
 }
 

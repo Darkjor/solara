@@ -66,7 +66,7 @@ export function Scenes() {
           });
         }
 
-        /* M2. Medidor de lote: barrido 180 a 255 y vuelta a 180 (solo desktop). */
+        /* M2. Lotes: barrido del medidor 180 a 255 y vuelta a 180 (solo desktop) y render revelado con la losa. */
         const calc = q("[data-calc]");
         if (wide && calc) {
           const up = gsap.parseEase("power1.inOut");
@@ -86,12 +86,23 @@ export function Scenes() {
               window.dispatchEvent(new CustomEvent(CALC_EVENT, { detail: r }));
             },
           });
-          const img = q(".lots-img");
-          const fig = q(".lots-photo");
-          if (img && fig) {
-            gsap.set(img, { scale: 1.1 });
-            gsap.fromTo(img, { y: -24 }, { y: 24, ease: "none", scrollTrigger: { trigger: fig, start: "top bottom", end: "bottom top", scrub: true } });
-          }
+        }
+        const lotsFrame = q(".lots-frame");
+        const lotsImg = q(".lots-img");
+        if (lotsFrame && lotsImg) {
+          const slabFrom = "polygon(8% 12%, 30% 9%, 70% 9%, 92% 12%, 94% 50%, 92% 88%, 70% 91%, 30% 91%, 8% 88%, 6% 50%)";
+          const slabTo = "polygon(0% 0%, 30% 0%, 70% 0%, 100% 0%, 100% 50%, 100% 100%, 70% 100%, 30% 100%, 0% 100%, 0% 50%)";
+          gsap.set(lotsFrame, { clipPath: slabFrom });
+          gsap.set(lotsImg, { scale: 1.08 });
+          ScrollTrigger.create({
+            trigger: lotsFrame,
+            start: "top 82%",
+            once: true,
+            onEnter: () => {
+              gsap.to(lotsFrame, { clipPath: slabTo, duration: 1.1, ease: "power3.out", onComplete: () => gsap.set(lotsFrame, { clearProps: "clipPath" }) });
+              gsap.to(lotsImg, { scale: 1, duration: 1.8, ease: "power3.out" });
+            },
+          });
         }
 
         /* M3. Apertura del isotipo: un rombo recorta la foto y se abre hasta llenar el marco. */
@@ -111,49 +122,32 @@ export function Scenes() {
           if (wide) tl.to({}, { duration: 0.25 });
         }
 
-        /* M4. Del Caribe al lote. Desktop: sticky con scrub. Móvil: fundido al entrar. */
+        /* M4. Del Caribe al lote, una sola vez al entrar (sin escena fija): zoom regional a local y hotspots en cascada. */
         const loc = q("[data-scene=location]");
         const regional = q(".location-regional");
         const local = q(".location-local");
-        if (loc && regional && local) {
+        const locMap = q(".location-map");
+        if (loc && regional && local && locMap) {
           const rows = qa("[data-time-row]");
           const spots = qa("[data-hotspot]");
-          if (wide) {
-            const locTrack = q(".location-track");
-            if (locTrack) {
-              loc.classList.add("scene-live");
-              gsap.set(spots, { opacity: 0, scale: 0.4 });
-              gsap.set(rows, { opacity: 0, y: 14 });
-              const tl = gsap.timeline({
-                defaults: { ease: "none" },
-                scrollTrigger: { trigger: locTrack, start: "top top", end: "bottom bottom", scrub: 0.5 },
-              });
-              tl.fromTo(regional, { scale: 1, transformOrigin: "59.9% 50%" }, { scale: 3.4, duration: 0.45, ease: "power1.in" }, 0);
-              tl.fromTo(regional, { opacity: 1 }, { opacity: 0, duration: 0.17 }, 0.28);
-              tl.fromTo(local, { scale: 1.35 }, { scale: 1, duration: 0.25, ease: "power2.out" }, 0.35);
-              const order = [...rows].sort((a, b) => Number(a.dataset.min) - Number(b.dataset.min));
-              order.forEach((row, i) => {
-                const at = 0.6 + (i / order.length) * 0.34;
-                const key = row.dataset.timeRow;
-                const spot = spots.find((s) => s.dataset.hotspot === key);
-                if (spot) tl.to(spot, { opacity: 1, scale: 1, duration: 0.05, ease: "power2.out" }, at);
-                tl.to(row, { opacity: 1, y: 0, duration: 0.05, ease: "power2.out" }, at);
-              });
-              undo.push(() => loc.classList.remove("scene-live"));
-            }
-          } else {
-            loc.classList.add("scene-lite");
-            gsap.set(regional, { opacity: 1, scale: 1, transformOrigin: "59.9% 50%" });
-            ScrollTrigger.create({
-              trigger: regional,
-              start: "top 70%",
-              once: true,
-              onEnter: () => {
-                gsap.to(regional, { opacity: 0, scale: 1.35, duration: 1.3, delay: 0.5, ease: "power2.inOut" });
-              },
-            });
-            undo.push(() => loc.classList.remove("scene-lite"));
-          }
+          loc.classList.add("scene-live");
+          gsap.set(regional, { opacity: 1, scale: 1, transformOrigin: "59.9% 50%" });
+          gsap.set(local, { scale: 1.35 });
+          gsap.set(spots, { opacity: 0, scale: 0.4 });
+          gsap.set(rows, { opacity: 0, y: 14 });
+          const order = [...rows].sort((a, b) => Number(a.dataset.min) - Number(b.dataset.min));
+          const tl = gsap.timeline({ paused: true });
+          tl.to(regional, { scale: 2.8, duration: 1.2, ease: "power2.inOut" }, 0);
+          tl.to(regional, { opacity: 0, duration: 0.5, ease: "power1.in" }, 0.7);
+          tl.to(local, { scale: 1, duration: 1.2, ease: "power2.out" }, 0);
+          order.forEach((row, i) => {
+            const at = 1.05 + i * 0.16;
+            const spot = spots.find((sp) => sp.dataset.hotspot === row.dataset.timeRow);
+            if (spot) tl.to(spot, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, at);
+            tl.to(row, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, at);
+          });
+          ScrollTrigger.create({ trigger: locMap, start: "top 75%", once: true, onEnter: () => tl.play() });
+          undo.push(() => loc.classList.remove("scene-live"));
         }
 
         /* M5. Barrido del plano, una vez, al 35% de visibilidad. */

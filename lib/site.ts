@@ -47,10 +47,3 @@ export const times: { key: TimeKey; min: number; x: number; y: number }[] = [
   { key: "dock", min: 10, x: 55, y: 69 },
   { key: "hotelZone", min: 13, x: 9, y: 34 },
 ];
-
-/** Grupos de la lista de tiempos (por cercanía). */
-export const timeGroups: TimeKey[][] = [
-  ["airfield", "beach", "lighthouse"],
-  ["beachEscape", "nativeChoice", "divina"],
-  ["dock", "hotelZone"],
-];

@@ -27,11 +27,6 @@ export function Footer() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link href={{ pathname: "/", hash: "faq" }} className="inline-flex min-h-9 items-center hover:underline">
-                {tn("faq")}
-              </Link>
-            </li>
           </ul>
         </nav>
         <div className="md:col-span-4">

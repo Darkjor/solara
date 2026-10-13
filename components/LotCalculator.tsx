@@ -44,7 +44,7 @@ export function LotCalculator() {
   }
 
   return (
-    <div data-calc className="mt-12 border-t border-tinta-900/12 pt-8">
+    <div data-calc className="mt-8 border-t border-tinta-900/12 pt-6">
       <h3 className="display t-h3">{t("calcTitle")}</h3>
 
       <div className="mt-4 grid gap-6 sm:grid-cols-[1fr_auto] sm:items-end">

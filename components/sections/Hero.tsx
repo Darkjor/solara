@@ -7,14 +7,17 @@ const delay = (ms: number) => ({ ["--d" as string]: `${ms}ms` });
 
 /**
  * Hero. Ganchos para M0 (fase 2): `[data-scene="hero"]`, `.hero-media` (foto),
- * `.hero-line` (cada oración del H1), `.hero-card` (tarjeta de cotización).
- * El H1 es la consigna oficial en tres líneas (una por oración).
+ * `.hero-line` (cada linea del H1), `.hero-card` (tarjeta de cotizacion).
+ * El H1 es la consigna oficial. En escritorio va en dos lineas (las dos primeras
+ * oraciones juntas, la ultima sola) y su escala sigue el ancho de la columna de
+ * texto (cqw, ver globals.css); en movil y tablet, una oracion por linea.
  */
 export function Hero() {
   const t = useTranslations("hero");
-  const lines = t("title")
+  const sentences = t("title")
     .split(". ")
     .map((l, i, a) => (i < a.length - 1 ? `${l}.` : l));
+  const lines = [sentences.slice(0, 2), sentences.slice(2)].filter((l) => l.length > 0);
 
   return (
     <section id="inicio" data-scene="hero" className="on-dark relative isolate overflow-hidden bg-selva-950 text-hueso">
@@ -36,12 +39,18 @@ export function Hero() {
       </div>
 
       <div className="wrap grid min-h-[100dvh] items-center gap-10 pt-24 pb-12 md:grid-cols-12 md:gap-6 lg:pb-14">
-        <div className="md:col-span-7">
-          <h1 className="hero-title display text-[clamp(2.25rem,1.1rem+4vw,3.5rem)] leading-[1.06] max-md:mt-[26dvh]">
-            {lines.map((l, i) => (
+        <div className="hero-copy md:col-span-7 lg:col-span-8">
+          <h1 className="hero-title display max-md:mt-[26dvh]">
+            {lines.map((line, i) => (
               <span key={i} className="hero-line block">
                 <span className="hero-line-in block" style={delay(i * 90)}>
-                  {l}
+                  {line.map((s, j) => (
+                    <span key={j} className="hero-sent">
+                      {s}
+                      {j < line.length - 1 ? " " : ""}
+                    </span>
+                  ))}
+                  {i < lines.length - 1 ? " " : ""}
                 </span>
               </span>
             ))}
@@ -72,22 +81,6 @@ export function Hero() {
       </div>
 
       <p className="wrap t-small pb-4 text-hueso md:absolute md:inset-x-0 md:bottom-0 md:pb-3">{t("imageNote")}</p>
-    </section>
-  );
-}
-
-/** Franja de respaldo bajo el pliegue: texto, sin logos inventados. */
-export function TrustStrip() {
-  const t = useTranslations("advantages");
-  return (
-    <section aria-label={t("legalTitle")} className="border-b border-tinta-900/12 bg-hueso">
-      <ul className="wrap grid gap-y-2 py-6 sm:grid-cols-3 sm:divide-x sm:divide-tinta-900/12 sm:py-8">
-        {(["seal1", "seal2", "seal3"] as const).map((k) => (
-          <li key={k} className="display text-xl text-tinta-900 sm:px-8 sm:text-center sm:text-[1.375rem]">
-            {t(k)}
-          </li>
-        ))}
-      </ul>
     </section>
   );
 }

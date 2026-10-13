@@ -74,7 +74,7 @@ export function Header() {
             <LogoLockup className="h-full" />
           </Link>
 
-          <nav aria-label={ta("mainNav")} className="hidden items-center gap-6 lg:flex xl:gap-8">
+          <nav aria-label={ta("mainNav")} className="hidden items-center gap-6 xl:flex xl:gap-8">
             {SECTIONS.map((s) => (
               <Link
                 key={s.id}
@@ -104,7 +104,7 @@ export function Header() {
               type="button"
               onClick={() => menu.current?.showModal()}
               aria-label={t("menuOpen")}
-              className="inline-flex size-11 items-center justify-center rounded-lg hover:bg-current/10 lg:hidden"
+              className="inline-flex size-11 items-center justify-center rounded-lg hover:bg-current/10 xl:hidden"
             >
               <List size={26} aria-hidden />
             </button>
