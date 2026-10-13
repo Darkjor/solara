@@ -38,7 +38,7 @@ export function Lots() {
         </article>
 
         <figure className="reveal flex flex-col lg:col-span-5" style={delay(80)}>
-          <div className="lots-frame relative isolate min-h-[300px] flex-1 lg:min-h-[360px] overflow-hidden rounded-lg bg-arena-200">
+          <div className="lots-frame relative isolate min-h-[300px] flex-1 max-lg:aspect-[4/5] max-lg:flex-none lg:min-h-[360px] overflow-hidden rounded-lg bg-arena-200">
             <Image
               src="/img/render-fachada-5-vertical.webp"
               alt={t("renderAlt")}

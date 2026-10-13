@@ -14,7 +14,7 @@ export function Brokers() {
         alt=""
         fill
         sizes="100vw"
-        className="-z-10 object-cover object-[50%_40%] opacity-70 [mask-image:linear-gradient(90deg,#000_25%,transparent_95%)] max-lg:opacity-55 max-lg:[mask-image:linear-gradient(180deg,#000_30%,transparent_95%)]"
+        className="-z-10 object-cover object-[50%_40%] opacity-70 max-lg:!inset-auto max-lg:!top-0 max-lg:!left-0 max-lg:!h-auto max-lg:!aspect-[2/3] lg:!right-auto lg:!w-[min(100%,1225px)] [mask-image:linear-gradient(90deg,#000_25%,transparent_95%)] max-lg:opacity-55 max-lg:[mask-image:linear-gradient(180deg,#000_30%,transparent_95%)]"
       />
       <div className="wrap grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
         <div className="lg:col-span-6">

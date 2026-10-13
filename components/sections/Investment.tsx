@@ -63,7 +63,7 @@ export function Investment() {
         <div className="grid gap-5 lg:grid-cols-[1.4fr_1fr] lg:gap-6">
           {/* Destino: cifras de Sectur con fuente y ano. */}
           <article className="reveal relative isolate flex min-h-[340px] flex-col lg:min-h-[420px] justify-end overflow-hidden rounded-lg">
-            <Image src="/img/lifestyle-playa-mujer.webp" alt="" fill sizes="(min-width:1024px) 55vw, 92vw" className="-z-10 object-cover object-[50%_40%]" />
+            <Image src="/img/lifestyle-playa-mujer.webp" alt="" fill sizes="(min-width:1024px) 55vw, 92vw" className="-z-10 object-cover object-[50%_8%]" />
             <div className="absolute inset-0 -z-10 bg-selva-950/45" />
             <div className="scrim-text absolute inset-0 -z-10" />
             <div className="on-dark p-6 text-hueso sm:p-8">

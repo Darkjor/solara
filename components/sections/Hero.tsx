@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LeadForm } from "@/components/LeadForm";
@@ -14,6 +14,11 @@ const delay = (ms: number) => ({ ["--d" as string]: `${ms}ms` });
  */
 export function Hero() {
   const t = useTranslations("hero");
+  // Direccion de arte: render horizontal en escritorio, render vertical en movil
+  // (un horizontal en un marco vertical oculta ~85 % de la foto y se ve borroso).
+  const base = { alt: t("imageAlt"), fill: true, priority: true, fetchPriority: "high" as const, quality: 75 };
+  const { props: wide } = getImageProps({ ...base, src: "/img/render-fachada-1.webp", sizes: "100vw" });
+  const { props: tall } = getImageProps({ ...base, src: "/img/hero-movil-fachada.webp", sizes: "160vw" });
   const sentences = t("title")
     .split(". ")
     .map((l, i, a) => (i < a.length - 1 ? `${l}.` : l));
@@ -21,17 +26,12 @@ export function Hero() {
 
   return (
     <section id="inicio" data-scene="hero" className="on-dark relative isolate overflow-hidden bg-selva-950 text-hueso">
-      <div className="hero-media absolute inset-0 -z-10">
-        <Image
-          src="/img/render-fachada-1.webp"
-          alt={t("imageAlt")}
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          quality={75}
-          className="object-cover object-[62%_50%] md:object-center"
-        />
+      <div className="hero-media absolute inset-0 -z-10 max-md:bottom-auto max-md:h-[100dvh]">
+        <picture>
+          <source media="(min-width:768px)" srcSet={wide.srcSet} sizes="100vw" />
+          <source srcSet={tall.srcSet} sizes="160vw" />
+          <img {...tall} alt={t("imageAlt")} className="object-cover object-[50%_42%] md:object-center" />
+        </picture>
         <div className="scrim-left absolute inset-0 max-md:hidden" />
         <div className="absolute inset-0 bg-selva-950/30 md:hidden" />
         <div className="scrim-bottom absolute inset-0 md:opacity-60" />

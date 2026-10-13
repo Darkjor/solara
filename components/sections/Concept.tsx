@@ -40,7 +40,7 @@ export function Concept() {
                   width={p.w}
                   height={p.h}
                   sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 90vw"
-                  className="aspect-[4/3] w-full object-cover sm:aspect-[4/5]"
+                  className="aspect-[4/5] w-full object-cover"
                 />
               </div>
               {p.n === 3 && <figcaption className="t-small mt-2 text-tinta-600">{t("caption3")}</figcaption>}
