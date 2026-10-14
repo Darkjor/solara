@@ -17,14 +17,14 @@ export default async function PanelHome({ searchParams }: PageProps<"/panel">) {
 
   const hace7 = daysAgoISO(7);
   const count = (t?: LeadTipo, since?: string) => {
-    let query = supabase.from("leads").select("id", { count: "exact", head: true });
+    let query = supabase.from("solara_leads").select("id", { count: "exact", head: true });
     if (t) query = query.eq("tipo", t);
     if (since) query = query.gte("created_at", since);
     return query;
   };
 
   let list = supabase
-    .from("leads")
+    .from("solara_leads")
     .select("id, created_at, tipo, nombre, telefono, email, interes, contacto_preferido, utm_source", { count: "exact" })
     .order("created_at", { ascending: false })
     .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);

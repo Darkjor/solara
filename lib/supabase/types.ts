@@ -15,7 +15,7 @@ export type Database = {
         Update: { created_at?: string; nombre?: string | null; usuario_id?: string };
         Relationships: [];
       };
-      leads: {
+      solara_leads: {
         Row: {
           contacto_preferido: ContactoPreferido | null;
           created_at: string;
@@ -48,7 +48,7 @@ export type Database = {
           utm_medium?: string | null;
           utm_source?: string | null;
         };
-        Update: Partial<Database["public"]["Tables"]["leads"]["Insert"]>;
+        Update: Partial<Database["public"]["Tables"]["solara_leads"]["Insert"]>;
         Relationships: [];
       };
     };
@@ -59,4 +59,4 @@ export type Database = {
   };
 };
 
-export type Lead = Database["public"]["Tables"]["leads"]["Row"];
+export type Lead = Database["public"]["Tables"]["solara_leads"]["Row"];

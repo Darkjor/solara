@@ -13,7 +13,7 @@ export default async function LeadPage({ params }: PageProps<"/panel/leads/[id]"
   const { supabase, nombre } = await requireAdmin();
   const { id } = await params;
   if (!UUID.test(id)) notFound();
-  const { data: lead } = await supabase.from("leads").select("*").eq("id", id).maybeSingle();
+  const { data: lead } = await supabase.from("solara_leads").select("*").eq("id", id).maybeSingle();
   if (!lead) notFound();
 
   const digits = lead.telefono.replace(/\D/g, "");

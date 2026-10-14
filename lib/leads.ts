@@ -30,7 +30,7 @@ export async function sendLead(formData: FormData): Promise<LeadFormState> {
   const { privacidad: _consent, ...row } = result.data;
   void _consent;
   const supabase = await createClient();
-  const { error } = await supabase.from("leads").insert(row);
+  const { error } = await supabase.from("solara_leads").insert(row);
   if (error) {
     console.error("[leads] insert falló:", error.message);
     return { status: "error" };
