@@ -128,28 +128,6 @@ export function Scenes() {
           if (wide) tl.to({}, { duration: 0.25 });
         }
 
-        /* M4. Mapa de Mahahual, una sola vez al entrar: acercamiento de 1.35 a 1 y hotspots y filas en cascada. */
-        const loc = q("[data-scene=location]");
-        const local = q(".location-local");
-        const locMap = q(".location-map");
-        if (loc && local && locMap) {
-          const rows = qa("[data-time-row]");
-          const spots = qa("[data-hotspot]");
-          gsap.set(local, { scale: 1.35, transformOrigin: "53% 60%" });
-          gsap.set(spots, { opacity: 0, scale: 0.4 });
-          gsap.set(rows, { opacity: 0, y: 14 });
-          const order = [...rows].sort((a, b) => Number(a.dataset.min) - Number(b.dataset.min));
-          const tl = gsap.timeline({ paused: true });
-          tl.to(local, { scale: 1, duration: 1.2, ease: "power2.out" }, 0);
-          order.forEach((row, i) => {
-            const at = 1.05 + i * 0.16;
-            const spot = spots.find((sp) => sp.dataset.hotspot === row.dataset.timeRow);
-            if (spot) tl.to(spot, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, at);
-            tl.to(row, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, at);
-          });
-          ScrollTrigger.create({ trigger: locMap, start: "top 75%", once: true, onEnter: () => tl.play() });
-        }
-
         /* M5. Barrido del plano, una vez, al 35% de visibilidad. */
         const viewer = q("[data-plan-viewer]");
         const layer = q("[data-plan-layer]");

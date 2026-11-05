@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { List, X } from "@phosphor-icons/react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { LogoLockup } from "@/components/brand/Logo";
-import { SECTIONS } from "@/lib/sections";
+import { NAV_SECTIONS } from "@/lib/sections";
 import { whatsappLink } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "@/components/WhatsAppFloat";
 
@@ -36,7 +36,7 @@ export function Header() {
   // aria-current en la sección visible.
   useEffect(() => {
     if (!home) return;
-    const els = SECTIONS.map((s) => document.getElementById(s.id)).filter(Boolean) as HTMLElement[];
+    const els = NAV_SECTIONS.map((s) => document.getElementById(s.id)).filter(Boolean) as HTMLElement[];
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
@@ -65,8 +65,8 @@ export function Header() {
         {ta("skip")}
       </a>
       <header
-        className={`fixed inset-x-0 top-0 z-50 h-16 transition-[background-color,box-shadow] duration-200 lg:h-18 ${
-          solid ? "bg-hueso/92 text-tinta-900 shadow-[var(--e1)] backdrop-blur-md [@media(prefers-reduced-transparency:reduce)]:bg-hueso [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none" : "scrim-top text-hueso"
+        className={`fixed inset-x-0 top-0 z-50 h-16 transition-[background-color,border-color] duration-200 lg:h-18 ${
+          solid ? "border-b border-tinta-900/10 bg-hueso/96 text-tinta-900 backdrop-blur-md [@media(prefers-reduced-transparency:reduce)]:bg-hueso [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none" : "scrim-top text-hueso"
         }`}
       >
         <div className="wrap flex h-full items-center justify-between gap-4">
@@ -75,7 +75,7 @@ export function Header() {
           </Link>
 
           <nav aria-label={ta("mainNav")} className="hidden items-center gap-6 xl:flex xl:gap-8">
-            {SECTIONS.map((s) => (
+            {NAV_SECTIONS.map((s) => (
               <Link
                 key={s.id}
                 href={{ pathname: "/", hash: s.id }}
@@ -127,7 +127,7 @@ export function Header() {
             </button>
           </div>
           <nav aria-label={ta("mainNav")} className="mt-8 flex flex-1 flex-col gap-1">
-            {SECTIONS.map((s) => (
+            {NAV_SECTIONS.map((s) => (
               <Link key={s.id} href={{ pathname: "/", hash: s.id }} onClick={close} className="display py-2 text-[2rem] leading-tight">
                 {t(s.key)}
               </Link>

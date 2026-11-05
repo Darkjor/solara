@@ -207,20 +207,6 @@ for (const [lang, w, h, motion] of runs) {
   steps.viewer.focusBack = await p.evaluate((s) => document.activeElement === document.querySelector(s), trig);
   ok(steps.viewer.closed && steps.viewer.focusBack, `Esc cierra=${steps.viewer.closed}, foco devuelto=${steps.viewer.focusBack}`);
 
-  // ---- M4: acercamiento 1.35 a 1 una sola vez + cascada ----
-  await p.evaluate(() => document.querySelector(".location-map").scrollIntoView({ block: "center", behavior: "instant" }));
-  await p.waitForTimeout(3300);
-  steps.m4 = await p.evaluate(() => {
-    const t = getComputedStyle(document.querySelector(".location-local")).transform;
-    const sc = t === "none" ? 1 : +t.match(/matrix\(([^,]+)/)[1];
-    return {
-      scale: +sc.toFixed(2),
-      spots: [...document.querySelectorAll("[data-hotspot]")].map((e) => +getComputedStyle(e).opacity).join(","),
-      rows: [...document.querySelectorAll("[data-time-row]")].map((e) => +getComputedStyle(e).opacity).join(","),
-    };
-  });
-  ok(steps.m4.scale === 1 && steps.m4.spots === "1,1,1" && steps.m4.rows === "1,1,1", `M4 final: ${JSON.stringify(steps.m4)}`);
-
   // ---- M1 y M3 (escritorio con movimiento) ----
   if (wide && !reduced) {
     const scrollTrack = async (sel, fr) => {

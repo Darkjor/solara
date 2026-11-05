@@ -137,7 +137,15 @@
     "dock": "Costa Maya Cruise Dock",
     "minutes": "{n} min",
     "note": "Approximate times based on SOLARA's map. They may vary with traffic and road conditions.",
-    "mapAlt": "Map of Mahahual showing SOLARA and travel times to the beach, lighthouse, cruise dock and hotel zone"
+    "mapTitle": "SOLARA map",
+    "satTitle": "SOLARA satellite view",
+    "tabMap": "Map",
+    "tabSat": "Satellite",
+    "tabs": "Map type",
+    "activate": "Activate map to move it",
+    "openMaps": "Open in Google Maps",
+    "newTab": "(new tab)",
+    "address": "Mahahual, Quintana Roo, Mexico"
   },
   "gallery": {
     "title": "Gallery",

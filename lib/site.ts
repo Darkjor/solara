@@ -24,6 +24,16 @@ export const site = {
   brochureUrl: "https://drive.google.com/drive/folders/11sexM-kNMakIcevL7mPh1t5Ej55Y6buS",
 } as const;
 
+/** Coordenadas de SOLARA (ficha de Google Maps del desarrollo) y la ficha para el enlace "Abrir en Google Maps". */
+export const geo = {
+  lat: 18.7686875,
+  lng: -87.6901875,
+  placeUrl: "https://maps.app.goo.gl/tkf9eni2KTrV5na97",
+} as const;
+
+/** Banda de financiamiento (BandaCifras, variante `financiamiento`): oculta hasta recibir los datos de la clienta [PENDIENTE CLIENTE]. */
+export const showFinancingBand = false;
+
 export const pricePerM2 = 4450;
 export const lotMin = 180;
 export const lotMax = 255;
@@ -33,17 +43,14 @@ export const priceMax = lotMax * pricePerM2; // 1,134,750
 
 export type TimeKey = "airfield" | "beach" | "lighthouse" | "beachEscape" | "nativeChoice" | "divina" | "dock" | "hotelZone";
 
-/**
- * Tiempos del mapa del cliente (minutos) y posición aproximada del hotspot
- * sobre `mapa-ubicacion.webp` (x%, y%). Afinar las posiciones si se cambia el mapa.
- */
-export const times: { key: TimeKey; min: number; x: number; y: number }[] = [
-  { key: "airfield", min: 2, x: 82, y: 36 },
-  { key: "beach", min: 5, x: 81, y: 76 },
-  { key: "lighthouse", min: 5, x: 22, y: 40 },
-  { key: "beachEscape", min: 5, x: 34, y: 50 },
-  { key: "nativeChoice", min: 6, x: 53, y: 53 },
-  { key: "divina", min: 9, x: 10, y: 8 },
-  { key: "dock", min: 10, x: 55, y: 69 },
-  { key: "hotelZone", min: 13, x: 9, y: 34 },
+/** Tiempos del mapa del cliente (minutos). */
+export const times: { key: TimeKey; min: number }[] = [
+  { key: "airfield", min: 2 },
+  { key: "beach", min: 5 },
+  { key: "lighthouse", min: 5 },
+  { key: "beachEscape", min: 5 },
+  { key: "nativeChoice", min: 6 },
+  { key: "divina", min: 9 },
+  { key: "dock", min: 10 },
+  { key: "hotelZone", min: 13 },
 ];

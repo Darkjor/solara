@@ -137,7 +137,15 @@
     "dock": "Muelle de cruceros Costa Maya",
     "minutes": "{n} min",
     "note": "Tiempos aproximados según el mapa de SOLARA. Pueden variar con el tráfico y las condiciones del camino.",
-    "mapAlt": "Mapa de Mahahual con SOLARA y los tiempos a la playa, el faro, el muelle de cruceros y la zona hotelera"
+    "mapTitle": "Mapa de SOLARA",
+    "satTitle": "Vista satélite de SOLARA",
+    "tabMap": "Mapa",
+    "tabSat": "Satélite",
+    "tabs": "Tipo de mapa",
+    "activate": "Activar mapa para moverlo",
+    "openMaps": "Abrir en Google Maps",
+    "newTab": "(pestaña nueva)",
+    "address": "Mahahual, Quintana Roo, México"
   },
   "gallery": {
     "title": "Galería",
