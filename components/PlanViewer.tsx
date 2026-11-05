@@ -133,7 +133,7 @@ export function PlanViewer({ children }: { children?: React.ReactNode }) {
       }}
       onPointerUp={() => (drag.current = null)}
       onPointerCancel={() => (drag.current = null)}
-      className={`plan-viewer group relative aspect-[1694/1165] w-full select-none max-sm:aspect-[4/3] lg:aspect-[1.62] overflow-hidden rounded-lg bg-selva-950 ${zoom > 1 ? "cursor-grab touch-none active:cursor-grabbing" : "touch-pan-y"} ${full ? "!aspect-auto h-dvh rounded-none" : ""}`}
+      className={`plan-viewer group relative aspect-[1694/1165] w-full select-none max-sm:aspect-[4/3] lg:aspect-[1.62] overflow-hidden bg-selva-950 ${zoom > 1 ? "cursor-grab touch-none active:cursor-grabbing" : "touch-pan-y"} ${full ? "!aspect-auto h-dvh" : ""}`}
     >
       {!loaded && !failed && (
         <div role="status" aria-label={t("loading")} className="absolute inset-0 animate-pulse bg-selva-900" />

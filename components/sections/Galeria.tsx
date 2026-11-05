@@ -74,10 +74,25 @@ export function Galeria() {
   };
 
   return (
-    <section id="galeria" data-scene="gallery" className="on-dark bg-selva-950 py-[clamp(40px,5.5vw,80px)] text-hueso">
-      <div className="wrap grid gap-8 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-8 lg:gap-y-6">
-        <h2 className="t-h2 display reveal lg:col-span-3 lg:col-start-1 lg:row-start-1">{t("title")}</h2>
-        <div className="gal-wrap lg:col-span-9 lg:col-start-4 lg:row-span-2 lg:row-start-1">
+    <section id="galeria" data-scene="gallery" className="on-dark relative isolate overflow-hidden bg-selva-950 pb-[clamp(40px,5.5vw,80px)] pt-[clamp(40px,5.5vw,80px)] text-hueso">
+      {/* S5: hoja de marca al 10 %, recortada por el borde, estatica, tras el titulo. */}
+      <Image
+        src="/img/hoja-monstera.webp"
+        alt=""
+        aria-hidden
+        width={552}
+        height={514}
+        sizes="360px"
+        className="pointer-events-none absolute -top-6 -right-10 -z-10 h-auto w-[240px] opacity-10 lg:w-[360px]"
+      />
+      <div className="wrap flex flex-wrap items-end justify-between gap-x-10 gap-y-3">
+        <h2 className="t-h2 display reveal">{t("title")}</h2>
+        <p className="t-small reveal max-w-[44ch] text-hueso/80" style={delay(120)}>
+          {t("caption")}
+        </p>
+      </div>
+      <div className="mt-8">
+        <div className="gal-wrap">
           <ul className="gal-grid">
             {CELLS.map((c, i) => (
               <li
@@ -95,15 +110,12 @@ export function Galeria() {
                     setOpen(i);
                   }}
                 >
-                  <Image src={c.src} alt="" fill sizes="(min-width:1024px) 40vw, (min-width:768px) 60vw, 460px" className="object-cover" />
+                  <Image src={c.src} alt="" fill sizes="(min-width:768px) 50vw, 78vw" className="object-cover" />
                 </button>
               </li>
             ))}
           </ul>
         </div>
-        <p className="t-small reveal max-w-[34ch] text-hueso/80 lg:col-span-3 lg:col-start-1 lg:row-start-2 lg:self-end" style={delay(120)}>
-          {t("caption")}
-        </p>
       </div>
 
       <dialog

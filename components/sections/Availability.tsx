@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { PlanViewer } from "@/components/PlanViewer";
 import { whatsappLink } from "@/lib/whatsapp";
@@ -26,7 +27,17 @@ export function Availability() {
     );
   };
   return (
-    <section id="disponibilidad" data-scene="availability" className="on-dark section bg-selva-900 text-hueso">
+    <section id="disponibilidad" data-scene="availability" className="on-dark section relative isolate overflow-hidden bg-selva-950 text-hueso">
+      {/* S5: hoja de marca al 10 %, recortada por el borde, estatica. */}
+      <Image
+        src="/img/hoja-monstera.webp"
+        alt=""
+        aria-hidden
+        width={552}
+        height={514}
+        sizes="360px"
+        className="pointer-events-none absolute -top-8 -right-12 -z-10 h-auto w-[260px] opacity-10 lg:w-[380px]"
+      />
       <div className="wrap">
         <h2 className="t-h2 display reveal">{t("title")}</h2>
         <p className="t-lead reveal prose-measure mt-4 text-hueso" style={{ ["--d" as string]: "80ms" }}>

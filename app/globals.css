@@ -666,16 +666,19 @@
   }
   .vivir-card {
     flex: none;
-    width: clamp(250px, 29vw, 380px);
+    width: 78vw;
     scroll-snap-align: start;
+  }
+  @media (min-width: 768px) {
+    .vivir-card {
+      width: clamp(280px, 32vw, 460px);
+    }
   }
   .vivir-photo {
     position: relative;
     margin: 0;
-    aspect-ratio: 1;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
-    border-radius: var(--r);
-    background: var(--color-arena-200);
   }
 
   /* Galeria. Movil: tira con scroll-snap (swipe). Desde 768: mosaico de dos filas
@@ -686,9 +689,9 @@
   }
   .gal-grid {
     display: flex;
-    gap: 10px;
-    margin: -4px -20px;
-    padding: 4px 20px;
+    gap: 4px;
+    margin: 0;
+    padding: 0 20px;
     list-style: none;
     overflow-x: auto;
     overscroll-behavior-x: contain;
@@ -701,7 +704,7 @@
   }
   .gal-cell {
     flex: none;
-    height: clamp(220px, 62vw, 340px);
+    height: clamp(260px, 78vw, 420px);
     aspect-ratio: var(--ar);
     scroll-snap-align: start;
   }
@@ -712,8 +715,8 @@
     .gal-grid {
       display: grid;
       grid-template-columns: repeat(33, minmax(0, 1fr));
-      grid-template-rows: calc((100cqw - 24px) / 4.46) calc((100cqw - 24px) / 3.34);
-      gap: 12px;
+      grid-template-rows: calc((100cqw - 8px) / 4.46) calc((100cqw - 8px) / 3.34);
+      gap: 4px;
       margin: 0;
       padding: 0;
       overflow: visible;
@@ -730,7 +733,6 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    border-radius: var(--r);
     background: var(--color-selva-900);
     cursor: zoom-in;
   }
@@ -831,4 +833,32 @@
 }
 html:has(.gal-viewer[open]) {
   overflow: hidden;
+}
+
+/* Soporte de fondo S2 (textura estatica, scroll, nunca fixed): la imagen se multiplica
+   al 12 % sobre el color de la seccion. */
+@layer components {
+  .tx-palma,
+  .tx-piedra {
+    position: relative;
+    isolation: isolate;
+  }
+  .tx-palma::before,
+  .tx-piedra::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-position: center;
+    background-size: cover;
+    mix-blend-mode: multiply;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  .tx-palma::before {
+    background-image: url("/img/textura-sombra-palma.webp");
+  }
+  .tx-piedra::before {
+    background-image: url("/img/logo-muro-piedra.webp");
+  }
 }

@@ -19,7 +19,7 @@ export function Faq() {
   };
 
   return (
-    <section id="faq" data-scene="faq" className="section bg-hueso">
+    <section id="faq" data-scene="faq" className="tx-palma section bg-hueso">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="wrap">
         <div className="mx-auto max-w-[56rem]">

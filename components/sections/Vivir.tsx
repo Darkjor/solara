@@ -4,7 +4,7 @@ import { VivirRow } from "@/components/VivirRow";
 
 const delay = (ms: number) => ({ ["--d" as string]: `${ms}ms` });
 
-/** Fotos de las 4 tarjetas y su foco. Tres se repiten en Inversion: aqui el recorte es cuadrado y distinto. */
+/** Fotos de las 4 piezas y su foco. Tres se repiten en Inversion y Concepto: aqui el recorte es 4:5 y distinto. */
 const CARDS = [
   { n: 1, src: "/img/lifestyle-playa-mujer.webp", pos: "50% 22%" },
   { n: 2, src: "/img/letrero-mahahual-atardecer.webp", pos: "50% 58%" },
@@ -16,7 +16,7 @@ const CARDS = [
  * Vivir en SOLARA (bloque 3): fila horizontal libre, sin fijar (scroll-snap,
  * arrastre y flechas en VivirRow). Cada foto entra una vez con el recorte poligonal
  * de la losa (`.slab-reveal`, el mismo de M0); con movimiento reducido o sin JS se ve
- * completa. Tarjeta: foto, titulo y una linea, sin texto sobre la imagen.
+ * completa. Pieza: foto 4:5 sin radio ni borde, titulo y una linea debajo, sin texto sobre la imagen.
  */
 export function Vivir() {
   const t = useTranslations("vivir");
@@ -30,7 +30,7 @@ export function Vivir() {
                 src={c.src}
                 alt={t(`card${c.n}Alt` as "card1Alt")}
                 fill
-                sizes="(min-width:1280px) 380px, (min-width:768px) 29vw, 260px"
+                sizes="(min-width:1280px) 460px, (min-width:768px) 32vw, 78vw"
                 draggable={false}
                 className="object-cover"
                 style={{ objectPosition: c.pos }}

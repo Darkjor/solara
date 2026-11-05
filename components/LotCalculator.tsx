@@ -44,10 +44,10 @@ export function LotCalculator() {
   }
 
   return (
-    <div data-calc className="mt-8 border-t border-tinta-900/12 pt-6">
+    <div data-calc>
       <h3 className="display t-h3">{t("calcTitle")}</h3>
 
-      <div className="mt-4 grid gap-6 sm:grid-cols-[1fr_auto] sm:items-end">
+      <div className="mt-6 grid gap-8">
         <div>
           <label htmlFor={id} className="sr-only">
             {t("calcSlider")}
@@ -83,9 +83,10 @@ export function LotCalculator() {
             <span>{lotMax} m²</span>
           </div>
         </div>
-        <div className="sm:text-right">
-          <p className="t-small font-semibold text-tinta-900">{t("calcResult")}</p>
-          <p data-calc-price className="display num text-[2.25rem] leading-tight text-tierra-600 sm:text-[2.75rem]">
+        <div>
+          <span aria-hidden className="block h-px w-10 bg-tierra-600" />
+          <p className="t-small mt-4 font-semibold text-tinta-900">{t("calcResult")}</p>
+          <p data-calc-price className="display num text-[2.25rem] leading-tight text-tierra-600 sm:text-[3rem]">
             {fmt(price)} <span className="text-[1.125rem]">MXN</span>
           </p>
         </div>

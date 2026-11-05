@@ -24,31 +24,30 @@ export function Concept() {
   );
 
   return (
-    <section id="concepto" data-scene="concept" className="concept-section section bg-hueso">
+    <section id="concepto" data-scene="concept" className="concept-section tx-palma bg-hueso">
       {/* Version apilada (movil, sin JS, movimiento reducido). */}
-      <div className="concept-stack wrap grid gap-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+      <div className="concept-stack section wrap grid gap-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
         {phases.map((p) => (
           <article
             key={p.n}
             className={`concept-step reveal ${p.n === 2 ? "lg:mt-16" : ""} ${p.n === 3 ? "sm:col-span-2 sm:mx-auto sm:max-w-[420px] lg:col-span-1 lg:mx-0 lg:max-w-none" : ""}`}
           >
             <figure>
-              <div className="overflow-hidden rounded-lg bg-arena-200">
-                <Image
-                  src={p.src}
-                  alt={p.alt}
-                  width={p.w}
-                  height={p.h}
-                  sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 90vw"
-                  className="aspect-[4/5] w-full object-cover"
-                />
-              </div>
+              <Image
+                src={p.src}
+                alt={p.alt}
+                width={p.w}
+                height={p.h}
+                sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 90vw"
+                className="aspect-[4/5] w-full object-cover"
+              />
               {p.n === 3 && <figcaption className="t-small mt-2 text-tinta-600">{t("caption3")}</figcaption>}
             </figure>
+            <span aria-hidden className="mt-6 block h-px w-10 bg-tierra-600" />
             {p.n === 1 ? (
-              <h2 className="t-h2 display mt-6 text-tinta-900">{p.title}</h2>
+              <h2 className="t-h2 display mt-4 text-tinta-900">{p.title}</h2>
             ) : (
-              <h3 className="t-h3 display mt-6 text-tinta-900">{p.title}</h3>
+              <h3 className="t-h3 display mt-4 text-tinta-900">{p.title}</h3>
             )}
             {p.text && <p className="mt-3 max-w-[34ch] text-tinta-900">{p.text}</p>}
             {p.n === 3 && brochure}
@@ -64,6 +63,7 @@ export function Concept() {
               <div className="concept-phases">
                 {phases.map((p) => (
                   <div key={p.n} data-phase={p.n} className="concept-phase">
+                    <span aria-hidden className="mb-6 block h-px w-10 bg-tierra-600" />
                     {p.n === 1 ? (
                       <h2 className="t-h2 display max-w-[14ch] text-tinta-900">{p.title}</h2>
                     ) : (
@@ -83,7 +83,7 @@ export function Concept() {
               </div>
             </div>
             <div className="lg:col-span-6 lg:col-start-7 lg:justify-self-center">
-              <div className="concept-window relative aspect-[4/5] h-[min(68dvh,680px)] overflow-hidden rounded-lg bg-arena-200">
+              <div className="concept-window relative aspect-[4/5] h-[min(68dvh,680px)] overflow-hidden">
                 {phases.map((p) => (
                   <div key={p.n} data-photo={p.n} className="absolute inset-0">
                     <Image src={p.src} alt={p.alt} fill sizes="560px" className="object-cover" />
@@ -97,6 +97,14 @@ export function Concept() {
           </div>
         </div>
       </div>
+
+      {/* Banda de respiro (S4): render a ancho completo, sin texto encima; leyenda debajo. */}
+      <figure className="relative">
+        <div className="relative h-[clamp(380px,34vw,520px)] w-full overflow-hidden">
+          <Image src="/img/render-fachada-3.webp" alt="" fill sizes="100vw" className="object-cover object-[50%_55%]" />
+        </div>
+        <figcaption className="wrap t-small py-3 text-tinta-600">{t("caption3")}</figcaption>
+      </figure>
     </section>
   );
 }
