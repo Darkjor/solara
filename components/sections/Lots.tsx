@@ -58,7 +58,7 @@ export function Lots() {
                 <p className="display t-h3">{t("renderTitle")}</p>
               </div>
             </div>
-            <figcaption className="t-small mt-3 max-w-[56ch] text-tinta-600 lg:pr-6 xl:pr-[calc(max(0px,(100vw-1280px)/2)+40px)]">{t("renderCaption")}</figcaption>
+            <figcaption className="t-small mt-3 max-w-[56ch] text-tinta-soft lg:pr-6 xl:pr-[calc(max(0px,(100vw-1280px)/2)+40px)]">{t("renderCaption")}</figcaption>
           </figure>
         </div>
       </div>

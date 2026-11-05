@@ -65,8 +65,9 @@ export function Investment() {
       {/* Destino: cifras de Sectur con fuente y ano, sobre foto a sangre. */}
       <BandaCifras
         src="/img/lifestyle-playa-pareja.webp"
-        position="50% 40%"
+        position="50% 30%"
         compact
+        strongVeil
         title={t("destinoTitle")}
         figures={[
           { value: t("stat1Value"), label: t("stat1Label") },

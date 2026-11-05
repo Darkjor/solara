@@ -21,6 +21,7 @@ export function BandaCifras({
   cta,
   caption,
   compact = false,
+  strongVeil = false,
 }: {
   variant?: "cifras" | "financiamiento";
   src: string;
@@ -33,6 +34,8 @@ export function BandaCifras({
   caption?: string;
   /** Banda mas baja (clamp 400 a 520 px) para bloques que ya son largos. */
   compact?: boolean;
+  /** Velo extra (a la izquierda en escritorio, parejo en movil) cuando el texto cruza a los sujetos de la foto. */
+  strongVeil?: boolean;
 }) {
   if (variant === "financiamiento" && !showFinancingBand) return null;
   // Tamano decreciente: la primera cifra manda.
@@ -41,6 +44,7 @@ export function BandaCifras({
     <div className={`on-dark relative isolate flex ${compact ? "min-h-[clamp(400px,36vw,520px)]" : "min-h-[clamp(480px,48vw,640px)]"} flex-col justify-center overflow-hidden bg-selva-950 text-hueso`}>
       <Image src={src} alt={alt} fill sizes="100vw" className="-z-20 object-cover" style={{ objectPosition: position }} />
       <div aria-hidden className="absolute inset-0 -z-10 bg-selva-950/70" />
+      {strongVeil && <div aria-hidden className="absolute inset-0 -z-10 bg-selva-950/25 md:bg-gradient-to-r md:from-selva-950/70 md:via-selva-950/30 md:to-transparent" />}
       <div className={`wrap ${compact ? "py-12" : "py-16"}`}>
         {title && <h2 className={`t-h2 display reveal ${compact ? "mb-8" : "mb-10"} max-w-[20ch]`}>{title}</h2>}
         <ul className="flex flex-col gap-6 md:flex-row md:items-end md:gap-0">
@@ -49,7 +53,7 @@ export function BandaCifras({
               {i > 0 && <span aria-hidden className="block h-px w-7 bg-hueso/30 md:hidden" />}
               <p className="flex flex-wrap items-baseline gap-x-3">
                 <span className={`display num leading-none ${sizes[i]}`}>{f.value}</span>
-                <span className="text-[1.0625rem] text-tierra-300">{f.label}</span>
+                <span className="text-[1.0625rem] text-hueso">{f.label}</span>
               </p>
             </li>
           ))}

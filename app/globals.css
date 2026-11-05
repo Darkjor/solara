@@ -225,14 +225,14 @@
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    color: var(--color-tierra-600);
+    color: var(--color-tierra-700);
     font-weight: 600;
     text-decoration: underline;
     text-decoration-thickness: 1.5px;
     text-underline-offset: 4px;
   }
   .link-action:hover {
-    color: var(--color-tierra-700);
+    color: color-mix(in oklab, var(--color-tierra-700) 80%, var(--color-tinta-900));
   }
   .on-dark .link-action {
     color: var(--color-tierra-300);
@@ -855,10 +855,11 @@ html:has(.gal-viewer[open]) {
     opacity: 0.12;
     pointer-events: none;
   }
-  .tx-palma::before {
+  /* Fondo diferido: RevealObserver agrega .tx-on al acercarse la seccion (300 px). */
+  .tx-palma.tx-on::before {
     background-image: url("/img/textura-sombra-palma.webp");
   }
-  .tx-piedra::before {
+  .tx-piedra.tx-on::before {
     background-image: url("/img/logo-muro-piedra.webp");
   }
 }

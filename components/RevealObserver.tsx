@@ -18,6 +18,7 @@ export function RevealObserver() {
     const items = Array.from(document.querySelectorAll<HTMLElement>(".reveal:not(.is-visible)"));
     if (!("IntersectionObserver" in window)) {
       items.forEach((el) => el.classList.add("is-visible"));
+      document.querySelectorAll(".tx-palma, .tx-piedra").forEach((el) => el.classList.add("tx-on"));
       return;
     }
 
@@ -32,8 +33,23 @@ export function RevealObserver() {
       { rootMargin: "0px 0px -12% 0px", threshold: 0.12 },
     );
     items.forEach((el) => io.observe(el));
+    // Texturas de fondo: se piden solo al acercarse (300 px) para no competir con el hero.
+    const tx = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("tx-on");
+          tx.unobserve(entry.target);
+        }
+      },
+      { rootMargin: "300px 0px" },
+    );
+    document.querySelectorAll<HTMLElement>(".tx-palma:not(.tx-on), .tx-piedra:not(.tx-on)").forEach((el) => tx.observe(el));
     root.classList.add("reveal-ready");
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      tx.disconnect();
+    };
   }, [pathname]);
 
   return null;

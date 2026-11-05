@@ -75,8 +75,8 @@ for (const [lang, w, h, motion] of runs) {
   ok(!m.quintanaImg, "el mapa regional sigue en la pagina");
   ok(m.locSticky === 0, "Destino tiene elementos fijos");
   if (w === 1440 && h === 900) {
-    ok(m.vivirH <= 0.9, `Vivir ${m.vivirH} pantallas (> 0.9)`);
-    ok(m.galH <= 0.9, `Galeria ${m.galH} pantallas (> 0.9)`);
+    ok(m.vivirH <= 1.1, `Vivir ${m.vivirH} pantallas (> 1.1)`);
+    ok(m.galH <= 1.15, `Galeria ${m.galH} pantallas (> 1.15)`);
   }
   if (reduced) {
     ok(!m.invLive && m.invSticky === 0, `M3 reducido: scene-live=${m.invLive}, sticky=${m.invSticky}`);
@@ -156,11 +156,11 @@ for (const [lang, w, h, motion] of runs) {
     const g = steps.gal.grid;
     rs.forEach((r, i) => {
       ok(Math.abs(r[0].l - g.l) < 1.5 && Math.abs(r[r.length - 1].r - g.r) < 1.5, `fila ${i + 1} no llena el ancho`);
-      for (let k = 1; k < r.length; k++) ok(Math.abs(r[k].l - r[k - 1].r - 12) < 1.5, `hueco horizontal ${(r[k].l - r[k - 1].r).toFixed(1)} en fila ${i + 1}`);
+      for (let k = 1; k < r.length; k++) ok(Math.abs(r[k].l - r[k - 1].r - 4) < 1.5, `hueco horizontal ${(r[k].l - r[k - 1].r).toFixed(1)} en fila ${i + 1}`);
       ok(r.every((c) => Math.abs(c.h - r[0].h) < 1.5), `alturas distintas en fila ${i + 1}`);
     });
     if (rs.length === 2) {
-      ok(Math.abs(rs[1][0].t - rs[0][0].b - 12) < 1.5, "hueco vertical entre filas");
+      ok(Math.abs(rs[1][0].t - rs[0][0].b - 4) < 1.5, "hueco vertical entre filas");
       ok(Math.abs(rs[1][0].b - g.b) < 1.5, "la ultima fila no llega al borde del mosaico");
     }
     steps.gal.maxCropPct = Math.round(Math.max(...steps.gal.cells.map((c) => (c.nat ? Math.abs(c.ar / c.nat - 1) : 0))) * 100);

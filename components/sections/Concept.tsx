@@ -41,7 +41,7 @@ export function Concept() {
                 sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 90vw"
                 className="aspect-[4/5] w-full object-cover"
               />
-              {p.n === 3 && <figcaption className="t-small mt-2 text-tinta-600">{t("caption3")}</figcaption>}
+              {p.n === 3 && <figcaption className="t-small mt-2 text-tinta-soft">{t("caption3")}</figcaption>}
             </figure>
             <span aria-hidden className="mt-6 block h-px w-10 bg-tierra-600" />
             {p.n === 1 ? (
@@ -90,7 +90,7 @@ export function Concept() {
                   </div>
                 ))}
               </div>
-              <p data-caption="3" className="concept-caption t-small mt-2 text-tinta-600">
+              <p data-caption="3" className="concept-caption t-small mt-2 text-tinta-soft">
                 {t("caption3")}
               </p>
             </div>
@@ -100,10 +100,10 @@ export function Concept() {
 
       {/* Banda de respiro (S4): render a ancho completo, sin texto encima; leyenda debajo. */}
       <figure className="relative">
-        <div className="relative h-[clamp(380px,34vw,520px)] w-full overflow-hidden">
-          <Image src="/img/render-fachada-3.webp" alt="" fill sizes="100vw" className="object-cover object-[50%_55%]" />
+        <div className="relative h-[clamp(300px,34vw,520px)] w-full overflow-hidden">
+          <Image src="/img/render-fachada-3.webp" alt="" fill sizes="100vw" className="object-cover object-[18%_55%] md:object-[50%_55%]" />
         </div>
-        <figcaption className="wrap t-small py-3 text-tinta-600">{t("caption3")}</figcaption>
+        <figcaption className="wrap t-small py-3 text-tinta-soft">{t("caption3")}</figcaption>
       </figure>
     </section>
   );

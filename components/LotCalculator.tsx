@@ -54,7 +54,7 @@ export function LotCalculator() {
           </label>
           <div className="flex items-baseline justify-between">
             <span className="num display text-[2rem] leading-none">{area} m²</span>
-            <span className="t-small num text-tinta-600">{t("calcSqft", { n: sqft.toLocaleString(locale === "en" ? "en-US" : "es-MX") })}</span>
+            <span className="t-small num text-tinta-900">{t("calcSqft", { n: sqft.toLocaleString(locale === "en" ? "en-US" : "es-MX") })}</span>
           </div>
           <input
             id={id}
@@ -78,7 +78,7 @@ export function LotCalculator() {
             }}
             aria-valuetext={`${area} m²`}
           />
-          <div className="t-small num flex justify-between text-tinta-600" aria-hidden>
+          <div className="t-small num flex justify-between text-tinta-soft" aria-hidden>
             <span>{lotMin} m²</span>
             <span>{lotMax} m²</span>
           </div>
