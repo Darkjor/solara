@@ -26,15 +26,18 @@ export function Vivir() {
         {CARDS.map((c, i) => (
           <li key={c.n} className="vivir-card">
             <figure className="vivir-photo reveal slab-reveal" style={delay(i * 90)}>
-              <Image
-                src={c.src}
-                alt={t(`card${c.n}Alt` as "card1Alt")}
-                fill
-                sizes="(min-width:1280px) 460px, (min-width:768px) 32vw, 78vw"
-                draggable={false}
-                className="object-cover"
-                style={{ objectPosition: c.pos }}
-              />
+              {/* data-vivir-img: capa que mueve Scenes (escala y desplazamiento); el img conserva el revelado .slab-reveal */}
+              <div data-vivir-img className="absolute inset-0">
+                <Image
+                  src={c.src}
+                  alt={t(`card${c.n}Alt` as "card1Alt")}
+                  fill
+                  sizes="(min-width:1280px) 460px, (min-width:768px) 32vw, 78vw"
+                  draggable={false}
+                  className="object-cover"
+                  style={{ objectPosition: c.pos }}
+                />
+              </div>
             </figure>
             <div className="reveal" style={delay(i * 90 + 140)}>
               <h3 className="display mt-4 text-[1.375rem] leading-[1.2] text-tinta-900">{t(`card${c.n}Title` as "card1Title")}</h3>
