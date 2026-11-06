@@ -4,6 +4,7 @@ import { ShieldCheck } from "@phosphor-icons/react/ssr";
 import { Isotipo } from "@/components/brand/Logo";
 import { BandaCifras } from "@/components/BandaCifras";
 import { whatsappLink } from "@/lib/whatsapp";
+import { site } from "@/lib/site";
 
 const delay = (ms: number) => ({ ["--d" as string]: `${ms}ms` });
 
@@ -39,7 +40,7 @@ export function Investment() {
                 ))}
               </ul>
               <div className="reveal mt-8" style={delay(160)}>
-                <a href={whatsappLink(t("packWa"))} target="_blank" rel="noopener noreferrer" className="btn btn-secondary max-sm:w-full max-sm:whitespace-normal max-sm:py-2 max-sm:text-center">
+                <a href={site.legalPackUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary max-sm:w-full max-sm:whitespace-normal max-sm:py-2 max-sm:text-center">
                   {t("packCta")}
                 </a>
               </div>

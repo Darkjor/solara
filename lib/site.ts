@@ -20,8 +20,10 @@ export const site = {
   whatsapp: "529987059776",
   whatsappDisplay: "+52 998 705 9776",
 
-  /** Brochure del cliente (Drive). El pack legal NO se enlaza: se conoce con el asesor. */
+  /** Brochure del cliente (Drive). */
   brochureUrl: "https://drive.google.com/drive/folders/11sexM-kNMakIcevL7mPh1t5Ej55Y6buS",
+  /** Pack legal del cliente (Drive): escritura con reserva de dominio, boleta de inscripcion y libertad de gravamen. */
+  legalPackUrl: "https://drive.google.com/drive/folders/1xvkl4llOvYITeopm2mt0mj2z9UqNgN3Y",
 } as const;
 
 /** Coordenadas de SOLARA (ficha de Google Maps del desarrollo) y la ficha para el enlace "Abrir en Google Maps". */
