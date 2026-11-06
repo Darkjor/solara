@@ -286,10 +286,7 @@
     }
   }
 
-  /* M0, intro del hero. Solo la primera visita de la sesión: el script del
-     <head> pone `hero-intro` en <html> (nunca con movimiento reducido ni sin
-     JS). Sin esa clase el hero se ve en su estado final. La foto ya está
-     pintada: la losa solo la descubre (clip-path), así no retrasa el LCP. */
+  /* Intro de entrada (solo paginas internas: `hero-intro` en <html> la pone el script del <head>). */
   @keyframes hero-in {
     from {
       opacity: 0;
@@ -300,71 +297,68 @@
       transform: none;
     }
   }
-  @keyframes hero-slab {
-    from {
-      clip-path: polygon(8% 12%, 30% 9%, 70% 9%, 92% 12%, 94% 50%, 92% 88%, 70% 91%, 30% 91%, 8% 88%, 6% 50%);
-    }
-    to {
-      clip-path: polygon(0 0, 30% 0, 70% 0, 100% 0, 100% 50%, 100% 100%, 70% 100%, 30% 100%, 0 100%, 0 50%);
-    }
-  }
-  @keyframes hero-zoom {
-    from {
-      transform: scale(1.08);
-    }
-    to {
-      transform: scale(1);
-    }
-  }
-  @keyframes hero-line {
-    from {
-      transform: translateY(108%);
-    }
-    to {
-      transform: none;
-    }
-  }
-  .hero-line {
-    overflow: hidden;
-    padding-bottom: 0.14em;
-    margin-bottom: -0.14em;
-  }
-  .hero-intro .hero-media {
-    animation: hero-slab 1s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  .hero-intro .hero-media img {
-    animation: hero-zoom 2.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  .hero-intro .hero-line-in {
-    animation: hero-line 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: calc(0.1s + var(--d, 0ms));
-  }
   .hero-intro .hero-in {
     animation: hero-in 0.8s var(--ease-out-soft) both;
     animation-delay: calc(0.1s + var(--d, 0ms));
   }
 
-  /* Hero: el eslogan en dos lineas en escritorio. La escala sigue el ancho de la columna de texto (cqw). */
+  /* Capitulo 0, hero en tres tiempos. El marcado es el estado final: las tres
+     oraciones apiladas (escala 0.8), subtitulo, precio y CTAs sobre la fachada.
+     `scrolly` en <html> (script del <head>, solo con movimiento permitido) fija el
+     estado del tiempo 1; Scenes.tsx lo quita si GSAP no carga. Solo transform,
+     opacity y clip-path. */
   .hero-title {
-    font-size: clamp(2.25rem, 1.1rem + 4vw, 3.5rem);
+    --hf: clamp(2.25rem, 1.1rem + 4vw, 3.5rem);
+    font-size: calc(var(--hf) * 0.8);
     line-height: 1.06;
   }
-  .hero-sent {
-    display: block;
-  }
   @media (min-width: 1024px) {
-    .hero-copy {
-      container-type: inline-size;
-    }
     .hero-title {
-      font-size: clamp(2rem, 5.8cqw, 3.5rem);
+      --hf: clamp(2.5rem, 4.6vw, 4.5rem);
     }
-    .hero-sent {
-      display: inline;
-    }
-    .hero-line-in {
+    .hero-line {
       white-space: nowrap;
     }
+  }
+  .hero-layer:not([data-hero-layer="3"]) {
+    display: none;
+  }
+  .scrolly .hero-layer {
+    display: block;
+  }
+  .scrolly .hero-layer[data-hero-layer="2"],
+  .scrolly .hero-layer[data-hero-layer="3"] {
+    clip-path: inset(100% 0 0 0);
+  }
+  .scrolly .hero-layer[data-hero-layer="2"] .hero-img,
+  .scrolly .hero-layer[data-hero-layer="3"] .hero-img {
+    transform: scale(1.12);
+  }
+  .hero-plan-img {
+    mix-blend-mode: lighten;
+  }
+  .scrolly .hero-plan-img {
+    transform: scale(1.04) rotate(-2deg);
+  }
+  .scrolly .hero-title {
+    display: grid;
+    align-content: end;
+    font-size: var(--hf);
+    min-height: calc(var(--hf) * 1.06 * 0.8 * 3);
+    transform-origin: 0 100%;
+  }
+  .scrolly .hero-line {
+    grid-area: 1 / 1;
+    align-self: end;
+  }
+  .scrolly .hero-line:not(:first-child) {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  .scrolly .hero-rest,
+  .scrolly .hero-note {
+    opacity: 0;
+    visibility: hidden;
   }
 
   /* Acordeón FAQ: <details> nativo. */
@@ -862,4 +856,124 @@ html:has(.gal-viewer[open]) {
   .tx-piedra.tx-on::before {
     background-image: url("/img/logo-muro-piedra.webp");
   }
+}
+
+/* Escenas en vivo (capitulos 2 y 4). Sin capa: ganan a las utilidades del marcado.
+   Las clases `loc-live` y `gal-live` solo las pone Scenes.tsx (>=1024 px, movimiento
+   permitido, GSAP cargado); sin ellas Ubicacion y Galeria son el diseno estatico. */
+.loc-local {
+  display: none;
+}
+.loc-live.loc-section {
+  padding-top: 0;
+}
+.loc-live .loc-stage {
+  height: 100svh;
+  padding-top: var(--header-h);
+  overflow: clip;
+}
+.loc-live .loc-grid {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  grid-template-rows: auto auto;
+  column-gap: 4rem;
+  align-content: center;
+  padding-block: 1.5rem;
+}
+.loc-live .loc-head {
+  grid-column: 1;
+  grid-row: 1;
+}
+.loc-live .loc-map {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  justify-self: center;
+  width: auto;
+  max-width: none;
+  margin: 0;
+  height: min(calc(100svh - var(--header-h) - 3rem), 56rem);
+  aspect-ratio: 993 / 1284;
+}
+.loc-live .loc-local {
+  display: block;
+  opacity: 0;
+}
+.loc-live .loc-list {
+  grid-column: 1;
+  grid-row: 2;
+  grid-template-columns: 1fr;
+  margin-top: 2rem;
+}
+.loc-live .loc-list > li {
+  padding: 1rem 0;
+  border-inline-width: 0;
+}
+.loc-live .loc-list > li:not(:last-child) {
+  border-bottom: 1px solid color-mix(in oklab, var(--color-tinta-900) 20%, transparent);
+}
+.loc-live .loc-min {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.gal-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 2.5rem;
+}
+.gal-body {
+  margin-top: 2rem;
+}
+.gal-live .gal-pin {
+  height: 100svh;
+  padding: 0;
+  overflow: clip;
+}
+.gal-live .gal-track {
+  display: flex;
+  align-items: stretch;
+  width: max-content;
+  height: 100%;
+}
+.gal-live .gal-head {
+  flex: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: min(46vw, 34rem);
+  max-width: none;
+  margin: 0;
+  padding-inline: max(40px, calc((100vw - 1200px) / 2)) 3rem;
+}
+.gal-live .gal-body {
+  margin: 0;
+  height: 100%;
+}
+.gal-live .gal-wrap {
+  height: 100%;
+  container-type: normal;
+}
+.gal-live .gal-grid {
+  display: flex;
+  gap: 4px;
+  height: 100%;
+  padding: 0;
+  overflow: visible;
+  scroll-snap-type: none;
+}
+.gal-live .gal-cell {
+  flex: none;
+  height: 100%;
+  width: min(calc(100svh * var(--arn)), 62vw);
+  aspect-ratio: auto;
+}
+.gal-live .gal-cell.reveal {
+  opacity: 1;
+  transform: none;
+  transition: none;
 }

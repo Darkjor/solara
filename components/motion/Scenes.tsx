@@ -6,7 +6,8 @@
 //
 // Regla de oro: ningún contenido queda oculto por defecto. Los estados ocultos
 // los pone este archivo, ya con GSAP cargado; si no carga, la página está completa.
-// El intro del hero (M0) es CSS puro y lo activa el script del <head>.
+// El estado del tiempo 1 del hero (clase `scrolly` en <html>) lo pone el script del
+// <head>; si GSAP no carga, este archivo la quita y el hero queda en su estado final.
 
 import { useEffect } from "react";
 import { loadGsap } from "@/lib/gsap";
@@ -22,15 +23,65 @@ export function Scenes() {
     let revert = () => {};
 
     async function arm() {
-      const { gsap, ScrollTrigger } = await loadGsap();
+      let lib: Awaited<ReturnType<typeof loadGsap>>;
+      try {
+        lib = await loadGsap();
+      } catch {
+        document.documentElement.classList.remove("scrolly");
+        return;
+      }
+      const { gsap, ScrollTrigger } = lib;
       if (cancelled) return;
       ScrollTrigger.config({ ignoreMobileResize: true });
       const mm = gsap.matchMedia();
 
-      mm.add({ motion: "(prefers-reduced-motion: no-preference)", wide: "(min-width: 1024px) and (min-height: 640px)" }, (ctx) => {
-        const { motion, wide } = ctx.conditions as { motion: boolean; wide: boolean };
+      mm.add({ motion: "(prefers-reduced-motion: no-preference)", tall: "(min-height: 560px)", wide: "(min-width: 1024px) and (min-height: 640px)" }, (ctx) => {
+        const { motion, tall, wide } = ctx.conditions as { motion: boolean; tall: boolean; wide: boolean };
         if (!motion) return;
         const undo: Array<() => void> = [];
+
+        /* M0. Hero en tres tiempos: pin de 200 % con scrub. Plano, faro y fachada entran por
+           clip-path; cada oracion del H1 sube y se desvanece; al final las tres se apilan
+           (escala 0.8) y entran subtitulo, precio y CTAs. Solo transform, opacity y clip-path. */
+        const hero = q("[data-hero-stage]");
+        if (tall && hero) {
+          const root = document.documentElement;
+          root.classList.add("scrolly");
+          const l2 = q("[data-hero-layer='2']")!;
+          const l3 = q("[data-hero-layer='3']")!;
+          const plan = q(".hero-plan-img")!;
+          const img2 = l2.querySelector("img")!;
+          const img3 = l3.querySelector("img")!;
+          const lines = qa(".hero-line");
+          const title = q(".hero-title")!;
+          const rest = q(".hero-rest")!;
+          const note = q(".hero-note")!;
+          const shut = "inset(100% 0% 0% 0%)";
+          const open = "inset(0% 0% 0% 0%)";
+          gsap.set([l2, l3], { clipPath: shut });
+          gsap.set([img2, img3], { scale: 1.12 });
+          gsap.set(plan, { scale: 1.04, rotate: -2 });
+          gsap.set(lines.slice(1), { opacity: 0, y: 40 });
+          gsap.set([rest, note], { autoAlpha: 0 });
+          const tl = gsap.timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: { trigger: hero, start: "top top", end: "+=200%", pin: true, scrub: 0.6, invalidateOnRefresh: true },
+          });
+          tl.to(plan, { scale: 1, rotate: 0, duration: 1, ease: "power1.out" }, 0);
+          [1, 2].forEach((i) => {
+            tl.to(lines[i - 1], { y: -40, opacity: 0, duration: 0.25 }, i);
+            tl.fromTo(lines[i], { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, i + 0.1);
+            tl.to(i === 1 ? l2 : l3, { clipPath: open, duration: 0.4, ease: "power2.inOut" }, i);
+            tl.to(i === 1 ? img2 : img3, { scale: 1, duration: 0.6, ease: "power2.out" }, i);
+          });
+          tl.to(note, { autoAlpha: 1, duration: 0.2 }, 2.3);
+          tl.to(title, { scale: 0.8, duration: 0.45, ease: "power2.inOut" }, 2.65);
+          tl.to(lines[0], { y: 0, yPercent: -200, opacity: 1, duration: 0.45, ease: "power2.inOut" }, 2.65);
+          tl.to(lines[1], { y: 0, yPercent: -100, opacity: 1, duration: 0.45, ease: "power2.inOut" }, 2.65);
+          tl.to(rest, { autoAlpha: 1, duration: 0.35 }, 2.9);
+          tl.to({}, { duration: 0.25 }, 3.25);
+          undo.push(() => root.classList.remove("scrolly"));
+        }
 
         /* M1. Concepto en tres tiempos (solo desktop). */
         const concept = q("[data-scene=concept]");
@@ -105,6 +156,60 @@ export function Scenes() {
           });
         }
 
+        /* Ubicacion (solo desktop): pin de 150 %. El mapa estatal se acerca a SOLARA (origen en
+           el medallon), hace fundido a la vista local y las tres distancias entran una por tiempo. */
+        const loc = q("[data-scene=location]");
+        const locStage = q("[data-loc-stage]");
+        if (wide && loc && locStage) {
+          loc.classList.add("loc-live");
+          const state = q("[data-loc-state]")!;
+          const local = q("[data-loc-local]")!;
+          const items = qa("[data-loc-item]");
+          gsap.set(state, { transformOrigin: "59.5% 56.7%" });
+          gsap.set(items, { opacity: 0, y: 24 });
+          const tl = gsap.timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: { trigger: locStage, start: "top top", end: "+=150%", pin: true, scrub: 0.6, invalidateOnRefresh: true },
+          });
+          tl.to(state, { scale: 2.2, x: () => -0.095 * state.offsetWidth, y: () => -0.067 * state.offsetHeight, duration: 1.2, ease: "power1.inOut" }, 0);
+          tl.to(items[0], { opacity: 1, y: 0, duration: 0.35 }, 0.6);
+          tl.to(local, { opacity: 1, duration: 0.6 }, 1.1);
+          tl.to(items[1], { opacity: 1, y: 0, duration: 0.35 }, 1.5);
+          tl.to(items[2], { opacity: 1, y: 0, duration: 0.35 }, 2.1);
+          tl.to({}, { duration: 0.4 }, 2.5);
+          undo.push(() => loc.classList.remove("loc-live"));
+        }
+
+        /* Galeria (solo desktop): wrapper fijado, la pista se mueve en x (patron 5.B). */
+        const gal = q("[data-scene=gallery]");
+        const galPin = q("[data-gal-pin]");
+        const galTrack = q("[data-gal-track]");
+        if (wide && gal && galPin && galTrack) {
+          gal.classList.add("gal-live");
+          const dist = () => Math.max(0, galTrack.scrollWidth - document.documentElement.clientWidth);
+          const tw = gsap.to(galTrack, {
+            x: () => -dist(),
+            ease: "none",
+            scrollTrigger: { trigger: galPin, start: "top top", end: () => "+=" + dist(), pin: true, scrub: 1, invalidateOnRefresh: true },
+          });
+          // Con teclado, la foto enfocada se trae a pantalla moviendo el scroll (la pista no se desplaza sola).
+          const onFocus = (e: FocusEvent) => {
+            const cell = (e.target as HTMLElement).closest<HTMLElement>(".gal-cell");
+            const st = tw.scrollTrigger;
+            const d = dist();
+            if (!cell || !st || !d) return;
+            const r = cell.getBoundingClientRect();
+            const left = r.left - galTrack.getBoundingClientRect().left;
+            const target = Math.min(d, Math.max(0, left - (document.documentElement.clientWidth - r.width) / 2));
+            window.scrollTo({ top: st.start + (target / d) * (st.end - st.start), behavior: "instant" });
+          };
+          galTrack.addEventListener("focusin", onFocus);
+          undo.push(() => {
+            galTrack.removeEventListener("focusin", onFocus);
+            gal.classList.remove("gal-live");
+          });
+        }
+
         /* M3. Apertura del isotipo: un rombo recorta la foto y se abre hasta llenar el marco. */
         const inv = q(".inv-img");
         const iso = q(".inv-iso");
@@ -165,7 +270,13 @@ export function Scenes() {
       });
 
       // Posiciones nuevas tras fuentes e imágenes de escena.
-      void document.fonts?.ready.then(() => !cancelled && ScrollTrigger.refresh());
+      void document.fonts?.ready.then(() => {
+        if (cancelled) return;
+        ScrollTrigger.refresh();
+        // Un enlace con ancla (p. ej. /#disponibilidad) cargo antes de que existiera el pin: se recoloca.
+        const target = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+        if (target && window.scrollY > 0) target.scrollIntoView({ behavior: "instant" });
+      });
       revert = () => mm.revert();
     }
 
@@ -183,7 +294,8 @@ export function Scenes() {
     };
     const start = () => {
       events.forEach((e) => window.addEventListener(e, kick, { passive: true, once: true }));
-      timeoutId = window.setTimeout(kick, 4500);
+      // Con el hero en tres tiempos (clase scrolly) se arma casi de inmediato: es lo primero que se ve.
+      timeoutId = window.setTimeout(kick, document.documentElement.classList.contains("scrolly") ? 120 : 4500);
     };
     if (document.readyState === "complete") start();
     else window.addEventListener("load", start, { once: true });

@@ -71,12 +71,12 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   return (
     <html lang={locale} suppressHydrationWarning className={`${federo.variable} ${assistant.variable} antialiased`}>
       <head>
-        {/* Activa las animaciones de entrada ANTES del primer render. Si el JS
+        {/* Activa las animaciones de entrada y el estado del tiempo 1 del hero (clase scrolly) ANTES del primer render. Si el JS
             de la app no marca los elementos en 3 s, se muestran todos. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){var c=document.documentElement.classList;c.add('reveal-ready');try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('solara-intro')){sessionStorage.setItem('solara-intro','1');c.add('hero-intro')}}catch(e){}setTimeout(function(){if(!window.__solaraReveal){document.querySelectorAll('.reveal').forEach(function(e){e.classList.add('is-visible')})}},3000)})();",
+              "(function(){var c=document.documentElement.classList;c.add('reveal-ready');try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&innerHeight>=560)c.add('scrolly');if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('solara-intro')){sessionStorage.setItem('solara-intro','1');c.add('hero-intro')}}catch(e){}setTimeout(function(){if(!window.__solaraReveal){document.querySelectorAll('.reveal').forEach(function(e){e.classList.add('is-visible')})}},3000)})();",
           }}
         />
       </head>

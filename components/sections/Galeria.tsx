@@ -74,7 +74,8 @@ export function Galeria() {
   };
 
   return (
-    <section id="galeria" data-scene="gallery" className="on-dark relative isolate overflow-hidden bg-selva-950 pb-[clamp(40px,5.5vw,80px)] pt-[clamp(40px,5.5vw,80px)] text-hueso">
+    <section id="galeria" data-scene="gallery" className="gal-section on-dark relative isolate overflow-hidden bg-selva-950 text-hueso">
+      <div data-gal-pin className="gal-pin relative isolate bg-selva-950 pb-[clamp(40px,5.5vw,80px)] pt-[clamp(40px,5.5vw,80px)]">
       {/* S5: hoja de marca al 10 %, recortada por el borde, estatica, tras el titulo. */}
       <Image
         src="/img/hoja-monstera.webp"
@@ -85,20 +86,21 @@ export function Galeria() {
         sizes="360px"
         className="pointer-events-none absolute -top-6 -right-10 -z-10 h-auto w-[240px] opacity-10 lg:w-[360px]"
       />
-      <div className="wrap flex flex-wrap items-end justify-between gap-x-10 gap-y-3">
+      <div data-gal-track className="gal-track">
+      <div className="wrap gal-head">
         <h2 className="t-h2 display reveal">{t("title")}</h2>
         <p className="t-small reveal max-w-[44ch] text-hueso/80" style={delay(120)}>
           {t("caption")}
         </p>
       </div>
-      <div className="mt-8">
+      <div className="gal-body">
         <div className="gal-wrap">
           <ul className="gal-grid">
             {CELLS.map((c, i) => (
               <li
                 key={c.n}
                 className="gal-cell reveal"
-                style={{ ...delay(i * 70), ["--ar" as string]: `${c.w}/${c.h}`, gridColumn: c.col, gridRow: c.row } as CSSProperties}
+                style={{ ...delay(i * 70), ["--ar" as string]: `${c.w}/${c.h}`, ["--arn" as string]: (c.w / c.h).toFixed(3), gridColumn: c.col, gridRow: c.row } as CSSProperties}
               >
                 <button
                   type="button"
@@ -116,6 +118,8 @@ export function Galeria() {
             ))}
           </ul>
         </div>
+      </div>
+      </div>
       </div>
 
       <dialog

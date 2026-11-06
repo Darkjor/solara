@@ -72,11 +72,11 @@ for (const [lang, w, h, motion] of runs) {
   ok(m.eyebrows <= 3, `eyebrows ${m.eyebrows}`);
   ok(m.vivirCards === 4 && m.galCells === 6, `tarjetas ${m.vivirCards} / celdas ${m.galCells}`);
   ok(m.faqCount === 6 && m.ldCount === 6 && m.faqMatch, `FAQ ${m.faqCount} visibles, ${m.ldCount} en JSON-LD, coinciden=${m.faqMatch}`);
-  ok(!m.quintanaImg, "el mapa regional sigue en la pagina");
+  ok(m.quintanaImg, "falta el mapa estatal de Ubicacion (capitulo 2 del scrollytelling)");
   ok(m.locSticky === 0, "Destino tiene elementos fijos");
   if (w === 1440 && h === 900) {
     ok(m.vivirH <= 1.1, `Vivir ${m.vivirH} pantallas (> 1.1)`);
-    ok(m.galH <= 1.15, `Galeria ${m.galH} pantallas (> 1.15)`);
+    ok(m.galH <= 1.15 || m.galH > 3, `Galeria ${m.galH} pantallas (mosaico <= 1.15, paneo en vivo con pin > 3)`);
   }
   if (reduced) {
     ok(!m.invLive && m.invSticky === 0, `M3 reducido: scene-live=${m.invLive}, sticky=${m.invSticky}`);
@@ -148,7 +148,12 @@ for (const [lang, w, h, motion] of runs) {
     });
     return { grid: { l: g.left, t: g.top, r: g.right, b: g.bottom }, cells, display: getComputedStyle(grid).display, scrollW: grid.scrollWidth, clientW: grid.clientWidth, snap: getComputedStyle(grid).scrollSnapType };
   });
-  if (w >= 768) {
+  // Con la galeria en vivo (>=1024 con movimiento) la pista es un paneo horizontal: celdas a 100svh de alto, no mosaico.
+  const galLive = await p.evaluate(() => document.querySelector("[data-scene=gallery]").classList.contains("gal-live"));
+  steps.gal.live = galLive;
+  if (galLive) {
+    ok(steps.gal.cells.every((c) => Math.abs(c.h - h) < 2), "la galeria en vivo no mide 100svh de alto");
+  } else if (w >= 768) {
     const rows = {};
     for (const c of steps.gal.cells) (rows[Math.round(c.t)] ??= []).push(c);
     const rs = Object.values(rows).map((r) => r.sort((a, b) => a.l - b.l));
@@ -172,7 +177,7 @@ for (const [lang, w, h, motion] of runs) {
 
   // Visor: foco, flechas, tab atrapado, Esc y foco devuelto.
   const trig = '.gal-cell:first-child .gal-open';
-  await p.click(trig);
+  await p.$eval(trig, (e) => e.click());
   await p.waitForTimeout(700);
   const inDlg = () => p.evaluate(() => !!document.activeElement?.closest("dialog.gal-viewer"));
   steps.viewer = { open: await p.evaluate(() => !!document.querySelector("dialog.gal-viewer[open]")), focusIn: await inDlg(), c1: await p.evaluate(() => document.querySelector(".gal-top p").textContent.trim()) };
