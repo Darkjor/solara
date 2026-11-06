@@ -49,7 +49,7 @@ export function Hero() {
             loading="eager"
             quality={75}
             sizes="100vw"
-            className="hero-img object-cover object-[50%_20%]"
+            className="hero-img object-cover object-[0%_35%]"
           />
         </div>
         {/* Tiempo 3 (y estado final): la fachada. */}
@@ -62,7 +62,7 @@ export function Hero() {
         </div>
         <div className="hero-scrim pointer-events-none absolute inset-0 -z-10">
           <div className="scrim-left absolute inset-0 max-md:hidden" />
-          <div className="scrim-text absolute inset-0 md:hidden" />
+          <div className="scrim-hero absolute inset-0 md:hidden" />
           <div className="scrim-bottom absolute inset-0 max-md:hidden md:opacity-60" />
           <div className="scrim-top absolute inset-0" />
         </div>
