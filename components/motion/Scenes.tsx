@@ -40,7 +40,7 @@ export function Scenes() {
         if (!motion) return;
         const undo: Array<() => void> = [];
 
-        /* M0. Hero en tres tiempos: pin de 200 % con scrub. Plano, faro y fachada entran por
+        /* M0. Hero en tres tiempos: pin de 200 % con scrub. Mar, faro y fachada entran por
            clip-path; cada oracion del H1 sube y se desvanece; al final las tres se apilan
            (escala 0.8) y entran subtitulo, precio y CTAs. Solo transform, opacity y clip-path. */
         const hero = q("[data-hero-stage]");
@@ -49,7 +49,7 @@ export function Scenes() {
           root.classList.add("scrolly");
           const l2 = q("[data-hero-layer='2']")!;
           const l3 = q("[data-hero-layer='3']")!;
-          const plan = q(".hero-plan-img")!;
+          const img1 = q("[data-hero-layer='1'] img")!;
           const img2 = l2.querySelector("img")!;
           const img3 = l3.querySelector("img")!;
           const lines = qa(".hero-line");
@@ -60,14 +60,14 @@ export function Scenes() {
           const open = "inset(0% 0% 0% 0%)";
           gsap.set([l2, l3], { clipPath: shut });
           gsap.set([img2, img3], { scale: 1.12 });
-          gsap.set(plan, { scale: 1.04, rotate: -2 });
+          gsap.set(img1, { scale: 1.08 });
           gsap.set(lines.slice(1), { opacity: 0, y: 40 });
           gsap.set([rest, note], { autoAlpha: 0 });
           const tl = gsap.timeline({
             defaults: { ease: "none" },
             scrollTrigger: { trigger: hero, start: "top top", end: "+=200%", pin: true, scrub: 0.6, invalidateOnRefresh: true },
           });
-          tl.to(plan, { scale: 1, rotate: 0, duration: 1, ease: "power1.out" }, 0);
+          tl.to(img1, { scale: 1, duration: 1, ease: "power1.out" }, 0);
           [1, 2].forEach((i) => {
             tl.to(lines[i - 1], { y: -40, opacity: 0, duration: 0.25 }, i);
             tl.fromTo(lines[i], { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, i + 0.1);

@@ -334,11 +334,8 @@
   .scrolly .hero-layer[data-hero-layer="3"] .hero-img {
     transform: scale(1.12);
   }
-  .hero-plan-img {
-    mix-blend-mode: lighten;
-  }
-  .scrolly .hero-plan-img {
-    transform: scale(1.04) rotate(-2deg);
+  .scrolly .hero-layer[data-hero-layer="1"] .hero-img {
+    transform: scale(1.08);
   }
   .scrolly .hero-title {
     display: grid;
@@ -386,6 +383,10 @@
   /* Hero movil: solo bajo el bloque de texto (selva 0.86 a 0.8 en el 40 % inferior, se disipa a los 82 %; AA medido a 390x844, 360x740); deja ver el render arriba. */
   .scrim-hero {
     background: linear-gradient(0deg, oklch(0.21 0.04 152 / 0.86) 0%, oklch(0.21 0.04 152 / 0.8) 40%, oklch(0.21 0.04 152 / 0.64) 56%, oklch(0.21 0.04 152 / 0.4) 68%, oklch(0.21 0.04 152 / 0) 82%);
+  }
+  /* Tiempo 1 del hero en escritorio (foto clara de playa): refuerzo solo bajo el texto, dentro de la capa 1 (se va con ella). En movil basta el escrim del hero. */
+  .scrim-t1 {
+    background: linear-gradient(90deg, oklch(0.21 0.04 152 / 0.5) 0%, oklch(0.21 0.04 152 / 0.4) 45%, oklch(0.21 0.04 152 / 0) 72%);
   }
   .scrim-bottom {
     background: linear-gradient(0deg, oklch(0.21 0.04 152 / 0.72) 0%, oklch(0.21 0.04 152 / 0) 60%);

@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 /**
- * Capitulo 0: hero en tres tiempos. Tres capas apiladas (plano, faro, fachada) y
+ * Capitulo 0: hero en tres tiempos. Tres capas apiladas (mar, faro, fachada) y
  * las tres oraciones del H1, cada una en su `span`. El HTML es el estado final
  * (render, H1 completo, subtitulo, precio y CTAs): asi se ve sin JS o con
  * movimiento reducido. Con movimiento, el script del <head> pone `scrolly` en
@@ -24,33 +24,34 @@ export function Hero() {
   return (
     <section id="inicio" data-scene="hero" className="hero on-dark relative bg-selva-950 text-hueso">
       <div data-hero-stage className="hero-stage relative isolate min-h-[100svh] overflow-hidden">
-        {/* Tiempo 1: el plano (verde sobre negro) se funde con el selva con lighten. */}
+        {/* Tiempo 1: el mar Caribe (lugar). Es la imagen LCP; en movil el encuadre deja ver el brindis y el horizonte. */}
         <div data-hero-layer="1" className="hero-layer absolute inset-0 -z-10 bg-selva-950">
-          <div className="hero-plan absolute max-lg:inset-x-0 max-lg:top-[var(--header-h)] max-lg:h-[32%] lg:inset-y-0 lg:right-0 lg:w-[64%]">
-            <Image
-              src="/img/plano-maestro-recorte.webp"
-              alt=""
-              aria-hidden
-              fill
-              priority
-              quality={85}
-              sizes="(min-width:1024px) 70vw, 100vw"
-              className="hero-plan-img object-contain"
-            />
-          </div>
-        </div>
-        {/* Tiempo 2: el faro al atardecer. */}
-        <div data-hero-layer="2" className="hero-layer hero-layer-extra absolute inset-0 -z-10">
           <Image
-            src="/img/letrero-mahahual-atardecer.webp"
+            src="/img/lifestyle-playa-pareja.webp"
             alt=""
             aria-hidden
             fill
-            loading="eager"
+            priority
             quality={75}
-            sizes="100vw"
-            className="hero-img object-cover object-[0%_35%]"
+            sizes="(min-width:768px) 100vw, 180vw"
+            className="hero-img object-cover object-[44%_50%] md:object-[50%_32%]"
           />
+          <div className="scrim-t1 pointer-events-none absolute inset-0 max-md:hidden" />
+        </div>
+        {/* Tiempo 2: el faro al atardecer. */}
+        <div data-hero-layer="2" className="hero-layer hero-layer-extra absolute inset-0 -z-10">
+          <div className="absolute inset-0 max-md:origin-bottom-left max-md:scale-[1.2]">
+            <Image
+              src="/img/letrero-mahahual-atardecer.webp"
+              alt=""
+              aria-hidden
+              fill
+              loading="eager"
+              quality={75}
+              sizes="(min-width:768px) 100vw, 160vw"
+              className="hero-img object-cover object-[0%_35%]"
+            />
+          </div>
         </div>
         {/* Tiempo 3 (y estado final): la fachada. */}
         <div data-hero-layer="3" className="hero-layer absolute inset-0 -z-10">
