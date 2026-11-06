@@ -17,6 +17,15 @@ import { lotCount, lotMax, lotMin } from "@/lib/site";
 const q = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector<T>(s);
 const qa = <T extends HTMLElement = HTMLElement>(s: string) => Array.from(document.querySelectorAll<T>(s));
 
+type Gsap = Awaited<ReturnType<typeof loadGsap>>["gsap"];
+type ST = Awaited<ReturnType<typeof loadGsap>>["ScrollTrigger"];
+
+// Vivir: tope de velocidad (la fila recorre como mucho 1.5x lo que dura el cruce), % de profundidad
+// de la foto (con escala 1.1 sobran 5 % por lado: 5 no deja hueco, 6 si) y espera del snap al soltarla.
+const VIVIR_RATIO = 1.5;
+const VIVIR_DEPTH = 5;
+const VIVIR_IDLE_MS = 160;
+
 export function Scenes() {
   useEffect(() => {
     let cancelled = false;
@@ -266,6 +275,10 @@ export function Scenes() {
           });
         }
 
+        /* M6. Vivir en SOLARA: la fila avanza sola con el scroll vertical hasta el primer gesto del usuario. */
+        const vivir = q("#vivir-row");
+        if (vivir) undo.push(linkVivir(gsap, ScrollTrigger, vivir));
+
         return () => undo.forEach((fn) => fn());
       });
 
@@ -310,4 +323,110 @@ export function Scenes() {
   }, []);
 
   return null;
+}
+
+/**
+ * Fila de Vivir ligada al scroll: solo `scrollLeft` (fila) y `transform` (foto). Mientras va ligada
+ * no hay snap; al primer gesto (arrastre horizontal, raton, rueda lateral, foco, flechas) se mata
+ * su trigger y queda el desplazamiento nativo. Un toque que solo empuja el scroll vertical no la suelta.
+ */
+function linkVivir(gsap: Gsap, ScrollTrigger: ST, row: HTMLElement) {
+  const overflow = () => row.scrollWidth - row.clientWidth;
+  if (overflow() <= 4 || row.scrollLeft > 4) return () => {}; // sin desbordamiento o el usuario ya la movio
+  const cards = Array.from(row.children) as HTMLElement[];
+  const imgs = cards.map((c) => c.querySelector<HTMLElement>("[data-vivir-img]")).filter((i): i is HTMLElement => !!i);
+  const setX = imgs.map((i) => gsap.quickSetter(i, "xPercent") as (v: number) => void);
+  gsap.set(imgs, { scale: 1.1, willChange: "transform" });
+
+  // Profundidad: solo depende de la posicion de la pieza en la fila (vale ligada o nativa).
+  const depth = () => {
+    const s = row.getBoundingClientRect();
+    const mid = s.left + s.width / 2;
+    cards.forEach((c, i) => {
+      if (!setX[i]) return;
+      const r = c.getBoundingClientRect();
+      const rel = (r.left + r.width / 2 - mid) / (s.width / 2 + r.width / 2);
+      setX[i](-Math.max(-1, Math.min(1, rel)) * VIVIR_DEPTH);
+    });
+  };
+  depth();
+  row.addEventListener("scroll", depth, { passive: true });
+  ScrollTrigger.addEventListener("refresh", depth);
+
+  row.style.scrollSnapType = "none";
+  const tween = gsap.to(row, {
+    scrollLeft: () => Math.max(0, Math.min(overflow(), VIVIR_RATIO * (window.innerHeight + row.offsetHeight))),
+    ease: "none",
+    scrollTrigger: { trigger: row, start: "top bottom", end: "bottom top", scrub: 1, invalidateOnRefresh: true },
+  });
+
+  let released = false;
+  let touching = false;
+  let sx = 0;
+  let sy = 0;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const settle = () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      if (!touching) row.style.scrollSnapType = "";
+    }, VIVIR_IDLE_MS);
+  };
+  const release = () => {
+    if (released) return;
+    released = true;
+    const left = row.scrollLeft; // matar el trigger reinicia la animacion: se conserva donde estaba la fila
+    tween.scrollTrigger?.kill();
+    tween.kill();
+    row.scrollLeft = left;
+    row.addEventListener("scroll", settle, { passive: true });
+    settle(); // el snap vuelve cuando el gesto termina y el scroll queda quieto (sin tiron bajo el dedo)
+  };
+  const onTouchStart = (e: TouchEvent) => {
+    touching = true;
+    sx = e.touches[0].clientX;
+    sy = e.touches[0].clientY;
+  };
+  const onTouchMove = (e: TouchEvent) => {
+    const dx = Math.abs(e.touches[0].clientX - sx);
+    if (dx > 4 && dx > Math.abs(e.touches[0].clientY - sy)) release();
+  };
+  const onTouchEnd = () => {
+    touching = false;
+    if (released) settle();
+  };
+  const onPointerDown = (e: PointerEvent) => {
+    if (e.pointerType !== "touch") release();
+  };
+  const onWheel = (e: WheelEvent) => {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) release();
+  };
+  const nav = q(".vivir-nav");
+  const on = { passive: true } as const;
+  row.addEventListener("touchstart", onTouchStart, on);
+  row.addEventListener("touchmove", onTouchMove, on);
+  row.addEventListener("touchend", onTouchEnd, on);
+  row.addEventListener("touchcancel", onTouchEnd, on);
+  row.addEventListener("pointerdown", onPointerDown, on);
+  row.addEventListener("wheel", onWheel, on);
+  row.addEventListener("focusin", release);
+  nav?.addEventListener("pointerdown", release, on);
+  nav?.addEventListener("focusin", release);
+
+  return () => {
+    clearTimeout(timer);
+    row.removeEventListener("scroll", depth);
+    row.removeEventListener("scroll", settle);
+    ScrollTrigger.removeEventListener("refresh", depth);
+    row.removeEventListener("touchstart", onTouchStart);
+    row.removeEventListener("touchmove", onTouchMove);
+    row.removeEventListener("touchend", onTouchEnd);
+    row.removeEventListener("touchcancel", onTouchEnd);
+    row.removeEventListener("pointerdown", onPointerDown);
+    row.removeEventListener("wheel", onWheel);
+    row.removeEventListener("focusin", release);
+    nav?.removeEventListener("pointerdown", release);
+    nav?.removeEventListener("focusin", release);
+    row.style.scrollSnapType = "";
+    gsap.set(imgs, { clearProps: "transform,willChange" });
+  };
 }
