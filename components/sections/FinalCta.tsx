@@ -1,9 +1,10 @@
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { LeadForm } from "@/components/LeadForm";
 import { whatsappLink } from "@/lib/whatsapp";
 
 /**
- * Cierre: unica banda de terracota solida, con textura de piedra al 12 % (multiply).
+ * Cierre: banda de terracota sobre foto de playa (velo al 82 %, AA con texto blanco).
  * Dos columnas desde 1024 px: texto a la izquierda, formulario (superficie blanca,
  * AA sobre la terracota) a la derecha. Movil: texto arriba, formulario abajo.
  */
@@ -11,7 +12,9 @@ export function FinalCta() {
   const t = useTranslations("finalCta");
   const tw = useTranslations("whatsapp");
   return (
-    <section data-scene="final" className="on-dark tx-piedra relative isolate overflow-hidden bg-tierra-600 text-white">
+    <section data-scene="final" className="on-dark relative isolate overflow-hidden bg-tierra-600 text-white">
+      <Image src="/img/lifestyle-playa-pareja.webp" alt="" aria-hidden fill sizes="100vw" className="-z-20 object-cover object-[50%_40%]" />
+      <div aria-hidden className="absolute inset-0 -z-10 bg-tierra-600/82" />
       <div className="wrap grid items-center gap-10 py-16 lg:grid-cols-12 lg:gap-12 lg:py-24">
         <div className="lg:col-span-6">
           <h2 className="t-h2 display reveal max-w-[18ch]">{t("title")}</h2>

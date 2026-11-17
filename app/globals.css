@@ -302,14 +302,11 @@
     animation-delay: calc(0.1s + var(--d, 0ms));
   }
 
-  /* Capitulo 0, hero en tres tiempos. El marcado es el estado final: las tres
-     oraciones apiladas (escala 0.8), subtitulo, precio y CTAs sobre la fachada.
-     `scrolly` en <html> (script del <head>, solo con movimiento permitido) fija el
-     estado del tiempo 1; Scenes.tsx lo quita si GSAP no carga. Solo transform,
-     opacity y clip-path. */
+  /* Capitulo 0, hero. Sin pin ni scroll ligado: el render y el texto ya estan en su estado final; al cargar (solo con
+     movimiento permitido) la imagen se asienta y el texto sube en cascada. */
   .hero-title {
     --hf: clamp(2.25rem, 1.1rem + 4vw, 3.5rem);
-    font-size: calc(var(--hf) * 0.8);
+    font-size: var(--hf);
     line-height: 1.06;
   }
   @media (min-width: 1024px) {
@@ -320,42 +317,38 @@
       white-space: nowrap;
     }
   }
-  .hero-layer:not([data-hero-layer="3"]) {
-    display: none;
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-img {
+      animation: hero-settle 1.8s var(--ease-out-soft) both;
+    }
+    .hero-line {
+      animation: hero-rise 0.9s var(--ease-out-soft) both;
+      animation-delay: calc(0.15s + var(--i, 0) * 0.14s);
+    }
+    .hero-rest {
+      animation: hero-rise 0.9s var(--ease-out-soft) 0.6s both;
+    }
+    .hero-form {
+      animation: hero-rise 0.9s var(--ease-out-soft) 0.8s both;
+    }
   }
-  .scrolly .hero-layer {
-    display: block;
+  @keyframes hero-settle {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: scale(1);
+    }
   }
-  .scrolly .hero-layer[data-hero-layer="2"],
-  .scrolly .hero-layer[data-hero-layer="3"] {
-    clip-path: inset(100% 0 0 0);
-  }
-  .scrolly .hero-layer[data-hero-layer="2"] .hero-img,
-  .scrolly .hero-layer[data-hero-layer="3"] .hero-img {
-    transform: scale(1.12);
-  }
-  .scrolly .hero-layer[data-hero-layer="1"] .hero-img {
-    transform: scale(1.08);
-  }
-  .scrolly .hero-title {
-    display: grid;
-    align-content: end;
-    font-size: var(--hf);
-    min-height: calc(var(--hf) * 1.06 * 0.8 * 3);
-    transform-origin: 0 100%;
-  }
-  .scrolly .hero-line {
-    grid-area: 1 / 1;
-    align-self: end;
-  }
-  .scrolly .hero-line:not(:first-child) {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  .scrolly .hero-rest,
-  .scrolly .hero-note {
-    opacity: 0;
-    visibility: hidden;
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   /* Acordeón FAQ: <details> nativo. */
@@ -464,7 +457,7 @@
    `scene-live` / `scene-lite`, clases que solo pone components/motion/Scenes.tsx
    con GSAP ya cargado: sin ellas la página es la versión completa y estática. */
 @layer components {
-  /* M1. Concepto en tres fases (consigna, significado, desarrolladora). Sticky corto: 200vh. */
+  /* M1. Concepto en dos fases (consigna, desarrolladora). Sticky corto: 160vh. */
   .concept-track,
   .concept-stage {
     display: none;
@@ -474,7 +467,7 @@
   }
   .scene-live .concept-track {
     display: block;
-    height: 200vh;
+    height: 160vh;
   }
   .scene-live .concept-stage {
     display: block;
@@ -501,8 +494,7 @@
       visibility 0s linear 0.5s;
   }
   .concept-stage[data-step="1"] [data-phase="1"],
-  .concept-stage[data-step="2"] [data-phase="2"],
-  .concept-stage[data-step="3"] [data-phase="3"] {
+  .concept-stage[data-step="2"] [data-phase="2"] {
     opacity: 1;
     transform: none;
     visibility: visible;
@@ -512,12 +504,12 @@
     opacity: 0;
     transition: opacity 0.5s var(--ease-out-soft);
   }
-  .concept-stage[data-step="3"] .concept-caption {
+  .concept-stage[data-step="2"] .concept-caption {
     opacity: 1;
   }
   .concept-bar {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 6px;
     max-width: 24rem;
   }
@@ -837,13 +829,11 @@ html:has(.gal-viewer[open]) {
 /* Soporte de fondo S2 (textura estatica, scroll, nunca fixed): la imagen se multiplica
    al 12 % sobre el color de la seccion. */
 @layer components {
-  .tx-palma,
-  .tx-piedra {
+  .tx-palma {
     position: relative;
     isolation: isolate;
   }
-  .tx-palma::before,
-  .tx-piedra::before {
+  .tx-palma::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -858,72 +848,10 @@ html:has(.gal-viewer[open]) {
   .tx-palma.tx-on::before {
     background-image: url("/img/textura-sombra-palma.webp");
   }
-  .tx-piedra.tx-on::before {
-    background-image: url("/img/logo-muro-piedra.webp");
-  }
 }
 
-/* Escenas en vivo (capitulos 2 y 4). Sin capa: ganan a las utilidades del marcado.
-   Las clases `loc-live` y `gal-live` solo las pone Scenes.tsx (>=1024 px, movimiento
-   permitido, GSAP cargado); sin ellas Ubicacion y Galeria son el diseno estatico. */
-.loc-local {
-  display: none;
-}
-.loc-live.loc-section {
-  padding-top: 0;
-}
-.loc-live .loc-stage {
-  height: 100svh;
-  padding-top: var(--header-h);
-  overflow: clip;
-}
-.loc-live .loc-grid {
-  height: 100%;
-  display: grid;
-  grid-template-columns: 5fr 7fr;
-  grid-template-rows: auto auto;
-  column-gap: 4rem;
-  align-content: center;
-  padding-block: 1.5rem;
-}
-.loc-live .loc-head {
-  grid-column: 1;
-  grid-row: 1;
-}
-.loc-live .loc-map {
-  grid-column: 2;
-  grid-row: 1 / 3;
-  justify-self: center;
-  width: auto;
-  max-width: none;
-  margin: 0;
-  height: min(calc(100svh - var(--header-h) - 3rem), 56rem);
-  aspect-ratio: 993 / 1284;
-}
-.loc-live .loc-local {
-  display: block;
-  opacity: 0;
-}
-.loc-live .loc-list {
-  grid-column: 1;
-  grid-row: 2;
-  grid-template-columns: 1fr;
-  margin-top: 2rem;
-}
-.loc-live .loc-list > li {
-  padding: 1rem 0;
-  border-inline-width: 0;
-}
-.loc-live .loc-list > li:not(:last-child) {
-  border-bottom: 1px solid color-mix(in oklab, var(--color-tinta-900) 20%, transparent);
-}
-.loc-live .loc-min {
-  font-family: var(--font-display);
-  font-size: 2.25rem;
-  line-height: 1;
-  font-weight: 400;
-}
-
+/* Escena en vivo de la galeria (capitulo 4). La clase `gal-live` solo la pone Scenes.tsx (>=1024 px, movimiento
+   permitido, GSAP cargado); sin ella Galeria es el diseno estatico. */
 .gal-head {
   display: flex;
   flex-wrap: wrap;

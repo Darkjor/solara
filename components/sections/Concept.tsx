@@ -3,10 +3,10 @@ import { useTranslations } from "next-intl";
 import { site } from "@/lib/site";
 
 /**
- * Concepto, intro en tres fases: elegir el lugar, que significa SOLARA, quien la
- * desarrolla. M1 (escritorio con movimiento): `.concept-track` de 200vh con
+ * Concepto, intro en dos fases: elegir el lugar y quien la desarrolla.
+ * M1 (escritorio con movimiento): `.concept-track` de 160vh con
  * `.concept-stage` sticky; el controlador (components/motion/Scenes.tsx) lo muestra
- * con la clase `scene-live`, cambia `data-step` (1 a 3) y barre la foto con un
+ * con la clase `scene-live`, cambia `data-step` (1 a 2) y barre la foto con un
  * recorte vertical entre fases. Movil, sin JS y movimiento reducido:
  * `.concept-stack`, tres bloques apilados. Los dos modos comparten datos, no marcado.
  */
@@ -14,8 +14,7 @@ export function Concept() {
   const t = useTranslations("concept");
   const phases = [
     { n: 1, src: "/img/lifestyle-terraza.webp", alt: t("alt1"), w: 1401, h: 2100, title: t("title"), text: t("lead") },
-    { n: 2, src: "/img/logo-muro-piedra.webp", alt: t("alt2"), w: 912, h: 1168, title: t("meaningTitle"), text: t("meaningText") },
-    { n: 3, src: "/img/render-fachada-4-vertical.webp", alt: t("alt3"), w: 1478, h: 2170, title: t("byTitle"), text: null },
+    { n: 2, src: "/img/render-fachada-4-vertical.webp", alt: t("alt3"), w: 1478, h: 2170, title: t("byTitle"), text: null },
   ] as const;
   const brochure = (
     <a href={site.brochureUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary mt-7">
@@ -26,11 +25,11 @@ export function Concept() {
   return (
     <section id="concepto" data-scene="concept" className="concept-section tx-palma bg-hueso">
       {/* Version apilada (movil, sin JS, movimiento reducido). */}
-      <div className="concept-stack section wrap grid gap-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+      <div className="concept-stack section wrap grid gap-12 sm:grid-cols-2 lg:gap-10">
         {phases.map((p) => (
           <article
             key={p.n}
-            className={`concept-step reveal ${p.n === 2 ? "lg:mt-16" : ""} ${p.n === 3 ? "sm:col-span-2 sm:mx-auto sm:max-w-[420px] lg:col-span-1 lg:mx-0 lg:max-w-none" : ""}`}
+            className={`concept-step reveal ${p.n === 2 ? "lg:mt-16" : ""}`}
           >
             <figure>
               <Image
@@ -41,7 +40,7 @@ export function Concept() {
                 sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 90vw"
                 className="aspect-[4/5] w-full object-cover"
               />
-              {p.n === 3 && <figcaption className="t-small mt-2 text-tinta-soft">{t("caption3")}</figcaption>}
+              {p.n === 2 && <figcaption className="t-small mt-2 text-tinta-soft">{t("caption3")}</figcaption>}
             </figure>
             <span aria-hidden className="mt-6 block h-px w-10 bg-tierra-600" />
             {p.n === 1 ? (
@@ -50,7 +49,7 @@ export function Concept() {
               <h3 className="t-h3 display mt-4 text-tinta-900">{p.title}</h3>
             )}
             {p.text && <p className="mt-3 max-w-[34ch] text-tinta-900">{p.text}</p>}
-            {p.n === 3 && brochure}
+            {p.n === 2 && brochure}
           </article>
         ))}
       </div>
@@ -70,7 +69,7 @@ export function Concept() {
                       <h3 className="t-h2 display max-w-[14ch] text-tinta-900">{p.title}</h3>
                     )}
                     {p.text && <p className="t-lead mt-5 max-w-[36ch] text-tinta-900">{p.text}</p>}
-                    {p.n === 3 && brochure}
+                    {p.n === 2 && brochure}
                   </div>
                 ))}
               </div>
@@ -90,7 +89,7 @@ export function Concept() {
                   </div>
                 ))}
               </div>
-              <p data-caption="3" className="concept-caption t-small mt-2 text-tinta-soft">
+              <p data-caption="2" className="concept-caption t-small mt-2 text-tinta-soft">
                 {t("caption3")}
               </p>
             </div>

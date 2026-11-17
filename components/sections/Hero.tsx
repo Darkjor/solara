@@ -1,60 +1,29 @@
-import Image, { getImageProps } from "next/image";
+import { getImageProps } from "next/image";
 import { useTranslations } from "next-intl";
+import { LeadForm } from "@/components/LeadForm";
 import { Link } from "@/i18n/navigation";
 
 /**
- * Capitulo 0: hero en tres tiempos. Tres capas apiladas (mar, faro, fachada) y
- * las tres oraciones del H1, cada una en su `span`. El HTML es el estado final
- * (render, H1 completo, subtitulo, precio y CTAs): asi se ve sin JS o con
- * movimiento reducido. Con movimiento, el script del <head> pone `scrolly` en
- * <html> (estado del tiempo 1, sin parpadeo) y Scenes.tsx fija el escenario con
- * pin + scrub. Ganchos: `[data-hero-stage]`, `[data-hero-layer=1|2|3]`,
- * `.hero-line`, `.hero-rest`, `.hero-note`.
+ * Capitulo 0: hero. Render de la fachada a sangre (horizontal en escritorio, vertical en movil), H1 de tres
+ * oraciones, subtitulo, precio y CTAs a la izquierda y un formulario basico (nombre, telefono, correo y
+ * comentario) a la derecha; en movil el formulario queda debajo del texto. Sin efecto de scroll ni pin:
+ * al cargar, la imagen se asienta y el texto sube en cascada (solo CSS, solo con movimiento permitido).
+ * Ganchos de estilo: `.hero-img`, `.hero-line`, `.hero-rest`, `.hero-form`.
  */
 export function Hero() {
   const t = useTranslations("hero");
   const sentences = t("title")
     .split(". ")
     .map((l, i, a) => (i < a.length - 1 ? `${l}.` : l));
-  // Tiempo 3: render horizontal en escritorio, vertical en movil (direccion de arte).
-  const base = { alt: t("imageAlt"), fill: true, loading: "eager" as const, quality: 75 };
+  // Render horizontal en escritorio, vertical en movil (direccion de arte). Es la imagen LCP.
+  const base = { alt: t("imageAlt"), fill: true, priority: true, quality: 75 };
   const { props: wide } = getImageProps({ ...base, src: "/img/render-fachada-1.webp", sizes: "100vw" });
   const { props: tall } = getImageProps({ ...base, src: "/img/hero-movil-fachada.webp", sizes: "160vw" });
 
   return (
     <section id="inicio" data-scene="hero" className="hero on-dark relative bg-selva-950 text-hueso">
       <div data-hero-stage className="hero-stage relative isolate min-h-[100svh] overflow-hidden">
-        {/* Tiempo 1: el mar Caribe (lugar). Es la imagen LCP; en movil el encuadre deja ver el brindis y el horizonte. */}
-        <div data-hero-layer="1" className="hero-layer absolute inset-0 -z-10 bg-selva-950">
-          <Image
-            src="/img/lifestyle-playa-pareja.webp"
-            alt=""
-            aria-hidden
-            fill
-            priority
-            quality={75}
-            sizes="(min-width:768px) 100vw, 180vw"
-            className="hero-img object-cover object-[44%_50%] md:object-[50%_32%]"
-          />
-          <div className="scrim-t1 pointer-events-none absolute inset-0 max-md:hidden" />
-        </div>
-        {/* Tiempo 2: el faro al atardecer. */}
-        <div data-hero-layer="2" className="hero-layer hero-layer-extra absolute inset-0 -z-10">
-          <div className="absolute inset-0 max-md:origin-bottom-left max-md:scale-[1.2]">
-            <Image
-              src="/img/letrero-mahahual-atardecer.webp"
-              alt=""
-              aria-hidden
-              fill
-              loading="eager"
-              quality={75}
-              sizes="(min-width:768px) 100vw, 160vw"
-              className="hero-img object-cover object-[0%_35%]"
-            />
-          </div>
-        </div>
-        {/* Tiempo 3 (y estado final): la fachada. */}
-        <div data-hero-layer="3" className="hero-layer absolute inset-0 -z-10">
+        <div className="hero-layer absolute inset-0 -z-10 bg-selva-950">
           <picture>
             <source media="(min-width:768px)" srcSet={wide.srcSet} sizes="100vw" />
             <source srcSet={tall.srcSet} sizes="160vw" />
@@ -68,11 +37,11 @@ export function Hero() {
           <div className="scrim-top absolute inset-0" />
         </div>
 
-        <div className="wrap relative flex min-h-[100svh] flex-col justify-end pt-24 pb-[4.5rem] lg:pb-16">
-          <div className="hero-copy max-w-[34rem] lg:max-w-[44rem]">
+        <div className="wrap relative flex min-h-[100svh] flex-col justify-end gap-10 pt-24 pb-[4.5rem] lg:grid lg:grid-cols-12 lg:items-end lg:gap-x-10 lg:pb-16">
+          <div className="hero-copy max-w-[34rem] lg:col-span-7 lg:max-w-[44rem]">
             <h1 className="hero-title display">
               {sentences.map((s, i) => (
-                <span key={i} className="hero-line block">
+                <span key={i} className="hero-line block" style={{ ["--i" as string]: i }}>
                   {s}
                   {i < sentences.length - 1 ? " " : ""}
                 </span>
@@ -94,6 +63,10 @@ export function Hero() {
                 </Link>
               </div>
             </div>
+          </div>
+
+          <div className="hero-form w-full max-w-[28rem] lg:col-span-5 lg:col-start-8 lg:justify-self-end">
+            <LeadForm variant="hero" id="cotiza-rapido" className="w-full !p-5 sm:!p-6" />
           </div>
         </div>
 

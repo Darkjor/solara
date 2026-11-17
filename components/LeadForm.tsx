@@ -20,7 +20,7 @@ export const SURFACE_EVENT = "solara:surface";
 
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign"] as const;
 type Status = "idle" | "sending" | "success" | "error" | "network";
-type Variant = "quote" | "broker" | "exit";
+type Variant = "quote" | "broker" | "exit" | "hero";
 
 export function LeadForm({ variant, id, className = "" }: { variant: Variant; id?: string; className?: string }) {
   const tq = useTranslations("quote");
@@ -87,6 +87,7 @@ export function LeadForm({ variant, id, className = "" }: { variant: Variant; id
       get("email") && tq("waEmail", { email: get("email") }),
       when && tq("waWhen", { when: tq(when as "when1") }),
       get("superficie") && tq("waSurface", { m2: get("superficie") }),
+      get("mensaje") && tq("waComment", { comment: get("mensaje") }),
     ]
       .filter(Boolean)
       .join("\n");
@@ -239,6 +240,12 @@ export function LeadForm({ variant, id, className = "" }: { variant: Variant; id
           </>
         )}
 
+        {variant === "hero" && (
+          <Field uid={uid} name="mensaje" label={`${tq("commentLabel")} ${tq("whenOptional")}`}>
+            <textarea id={`${uid}-mensaje`} name="mensaje" rows={3} maxLength={1500} placeholder={tq("commentPh")} readOnly={sending} className="field resize-none" />
+          </Field>
+        )}
+
         {variant === "quote" && (
           <>
             <Field uid={uid} name="interes" label={`${tq("whenLabel")} ${tq("whenOptional")}`}>
@@ -310,7 +317,7 @@ export function LeadForm({ variant, id, className = "" }: { variant: Variant; id
       </button>
 
       <p className="mt-3 text-center t-small text-tinta-600">
-        {variant === "quote" ? `${tq("priceNote")} ${tq("privacyShort")}` : tq("privacyShort")}
+        {variant === "quote" || variant === "hero" ? `${tq("priceNote")} ${tq("privacyShort")}` : tq("privacyShort")}
       </p>
     </form>
   );

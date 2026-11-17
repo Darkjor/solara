@@ -18,7 +18,7 @@ export function RevealObserver() {
     const items = Array.from(document.querySelectorAll<HTMLElement>(".reveal:not(.is-visible)"));
     if (!("IntersectionObserver" in window)) {
       items.forEach((el) => el.classList.add("is-visible"));
-      document.querySelectorAll(".tx-palma, .tx-piedra").forEach((el) => el.classList.add("tx-on"));
+      document.querySelectorAll(".tx-palma").forEach((el) => el.classList.add("tx-on"));
       return;
     }
 
@@ -44,7 +44,7 @@ export function RevealObserver() {
       },
       { rootMargin: "300px 0px" },
     );
-    document.querySelectorAll<HTMLElement>(".tx-palma:not(.tx-on), .tx-piedra:not(.tx-on)").forEach((el) => tx.observe(el));
+    document.querySelectorAll<HTMLElement>(".tx-palma:not(.tx-on)").forEach((el) => tx.observe(el));
     root.classList.add("reveal-ready");
     return () => {
       io.disconnect();
