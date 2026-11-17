@@ -23,7 +23,7 @@ export const site = {
   /** Brochure del cliente (Drive). */
   brochureUrl: "https://drive.google.com/drive/folders/11sexM-kNMakIcevL7mPh1t5Ej55Y6buS",
   /** Pack legal del cliente (Drive): escritura con reserva de dominio, boleta de inscripcion y libertad de gravamen. */
-  legalPackUrl: "https://drive.google.com/drive/folders/1xvkl4llOvYITeopm2mt0mj2z9UqNgN3Y",
+  legalPackUrl: "https://drive.google.com/drive/folders/1oNvh9TLPcm6NYnbjkYpYclSdu-cXe1bN",
 } as const;
 
 /** Coordenadas de SOLARA (ficha de Google Maps del desarrollo) y la ficha para el enlace "Abrir en Google Maps". */
