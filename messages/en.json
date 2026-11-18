@@ -253,7 +253,8 @@
     "privacy": "Privacy notice",
     "brochure": "See brochure",
     "disclaimer": "2026 list prices, subject to change without notice. Illustrative images subject to modifications and project adjustments. Availability subject to prior sale. Destination figures come from the sources cited and are not a guarantee of returns.",
-    "copyright": "© {year} SOLARA Lotes de Inversión. All rights reserved."
+    "copyright": "© {year} SOLARA Lotes de Inversión. All rights reserved.",
+    "madeBy": "Website built by"
   },
   "whatsapp": {
     "label": "Message an advisor on WhatsApp",

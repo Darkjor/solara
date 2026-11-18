@@ -253,7 +253,8 @@
     "privacy": "Aviso de privacidad",
     "brochure": "Ver brochure",
     "disclaimer": "Precios de lista 2026, sujetos a cambio sin previo aviso. Imágenes ilustrativas sujetas a modificaciones y adaptaciones de proyecto. Disponibilidad sujeta a venta previa. Cifras del destino de las fuentes indicadas; no constituyen garantía de rendimiento.",
-    "copyright": "© {year} SOLARA Lotes de Inversión. Todos los derechos reservados."
+    "copyright": "© {year} SOLARA Lotes de Inversión. Todos los derechos reservados.",
+    "madeBy": "Sitio web desarrollado por"
   },
   "whatsapp": {
     "label": "Escribir a un asesor por WhatsApp",

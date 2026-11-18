@@ -55,6 +55,12 @@ export function Footer() {
         <div className="wrap py-6 pb-24 md:pb-6">
           <p className="t-small max-w-[110ch] text-hueso/90">{t("disclaimer")}</p>
           <p className="t-small mt-3 text-hueso/90">{t("copyright", { year: new Date().getFullYear() })}</p>
+          <p className="t-small mt-1 text-hueso/90">
+            {t("madeBy")}{" "}
+            <a href="https://fabook-hub-portafolio.vercel.app/es" target="_blank" rel="noopener noreferrer" className="font-semibold underline-offset-4 hover:underline">
+              Fabook Hub
+            </a>
+          </p>
         </div>
       </div>
     </footer>
