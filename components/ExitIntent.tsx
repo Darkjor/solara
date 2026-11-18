@@ -109,7 +109,7 @@ export function ExitIntent() {
       className="m-auto w-[min(30rem,calc(100vw-2rem))] max-h-[calc(100dvh-2rem)] overflow-auto rounded-lg bg-hueso p-0 text-tinta-900 shadow-[var(--e3)] backdrop:bg-selva-950/55"
     >
       {mounted && (
-        <div className="relative p-6 sm:p-8">
+        <div className="relative p-6 pt-12 text-center sm:p-8 sm:pt-12">
           <button
             type="button"
             onClick={close}
@@ -118,11 +118,11 @@ export function ExitIntent() {
           >
             <X size={22} aria-hidden />
           </button>
-          <h2 id="exit-title" className="display t-h3 pr-10">
+          <h2 id="exit-title" className="display t-h3 mx-auto max-w-[24ch]">
             {t("title")}
           </h2>
-          <p className="mt-3 text-tinta-900">{t("text")}</p>
-          <LeadForm variant="exit" className="mt-5 !p-0 !shadow-none" />
+          <p className="mx-auto mt-3 max-w-[40ch] text-tinta-900">{t("text")}</p>
+          <LeadForm variant="exit" className="mt-5 text-center !p-0 !shadow-none" />
           <button type="button" onClick={close} className="link-action mt-4 w-full justify-center !font-normal">
             {t("dismiss")}
           </button>

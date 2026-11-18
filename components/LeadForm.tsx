@@ -270,7 +270,7 @@ export function LeadForm({ variant, id, className = "" }: { variant: Variant; id
       </div>
 
       <div className="mt-4">
-        <label className="flex cursor-pointer items-start gap-3 text-[0.9375rem] leading-snug">
+        <label className={`flex cursor-pointer items-start gap-3 text-[0.9375rem] leading-snug ${isExit ? "justify-center text-left" : ""}`}>
           <input
             type="checkbox"
             name="privacidad"
