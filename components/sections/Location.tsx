@@ -54,20 +54,21 @@ export function Location() {
         </div>
       </div>
 
-      <div className="mt-10 lg:mt-12">
-        <MapaUbicacion />
-      </div>
 
-      <div className="wrap mt-10 lg:mt-12">
-        <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-3">
-          <p className="text-tinta-900">{t("address")}</p>
-          <a href={geo.placeUrl} target="_blank" rel="noopener" className="link-action">
+      <div className="wrap mt-10 grid items-center gap-8 lg:mt-12 lg:grid-cols-12 lg:gap-x-12">
+        <div className="lg:col-span-8 lg:col-start-5 lg:row-start-1">
+          <MapaUbicacion />
+        </div>
+        <div className="lg:col-span-4 lg:col-start-1 lg:row-start-1">
+          <span aria-hidden className="block h-px w-10 bg-tierra-600" />
+          <p className="mt-4 text-tinta-900">{t("address")}</p>
+          <a href={geo.placeUrl} target="_blank" rel="noopener" className="link-action mt-4">
             {t("openMaps")}
             <span className="sr-only"> {t("newTab")}</span>
             <ArrowUpRight size={18} aria-hidden />
           </a>
+          <p className="t-small mt-6 max-w-[40ch] text-tinta-900/80">{t("note")}</p>
         </div>
-        <p className="t-small mt-6 max-w-[62ch] text-tinta-900/80">{t("note")}</p>
       </div>
     </section>
   );
