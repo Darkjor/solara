@@ -4,7 +4,7 @@ import { LeadForm } from "@/components/LeadForm";
 import { Link } from "@/i18n/navigation";
 
 /**
- * Capitulo 0: hero. Render de la fachada a sangre (horizontal en escritorio, vertical en movil), H1 de tres
+ * Capitulo 0: hero. Render nocturno de la fachada a sangre, H1 de tres
  * oraciones, subtitulo, precio y CTAs a la izquierda y un formulario basico (nombre, telefono, correo y
  * comentario) a la derecha; en movil el formulario queda debajo del texto. Sin efecto de scroll ni pin:
  * al cargar, la imagen se asienta y el texto sube en cascada (solo CSS, solo con movimiento permitido).
@@ -15,20 +15,14 @@ export function Hero() {
   const sentences = t("title")
     .split(". ")
     .map((l, i, a) => (i < a.length - 1 ? `${l}.` : l));
-  // Render horizontal en escritorio, vertical en movil (direccion de arte). Es la imagen LCP.
-  const base = { alt: t("imageAlt"), fill: true, priority: true, quality: 75 };
-  const { props: wide } = getImageProps({ ...base, src: "/img/render-fachada-1.webp", sizes: "100vw" });
-  const { props: tall } = getImageProps({ ...base, src: "/img/hero-movil-fachada.webp", sizes: "160vw" });
+  // Render nocturno de la fachada (vertical, 1478x2170); en escritorio se recorta en banda. Es la imagen LCP.
+  const { props: night } = getImageProps({ alt: t("imageAlt"), fill: true, priority: true, quality: 80, src: "/img/render-fachada-4-vertical.webp", sizes: "100vw" });
 
   return (
     <section id="inicio" data-scene="hero" className="hero on-dark relative bg-selva-950 text-hueso">
       <div data-hero-stage className="hero-stage relative isolate min-h-[100svh] overflow-hidden">
         <div className="hero-layer absolute inset-0 -z-10 bg-selva-950">
-          <picture>
-            <source media="(min-width:768px)" srcSet={wide.srcSet} sizes="100vw" />
-            <source srcSet={tall.srcSet} sizes="160vw" />
-            <img {...tall} alt={t("imageAlt")} className="hero-img object-cover object-[50%_42%] md:object-center" />
-          </picture>
+          <img {...night} alt={t("imageAlt")} className="hero-img object-cover object-[50%_42%] md:object-[50%_38%]" />
         </div>
         <div className="hero-scrim pointer-events-none absolute inset-0 -z-10">
           <div className="scrim-left absolute inset-0 max-md:hidden" />
