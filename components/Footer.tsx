@@ -12,32 +12,32 @@ export function Footer() {
   return (
     <footer className="on-dark bg-selva-900 text-hueso">
       <div className="wrap grid gap-10 py-14 md:grid-cols-12 md:gap-8 lg:py-16">
-        <div className="md:col-span-5">
-          <LogoFull className="h-28 w-auto text-hueso" />
+        <div className="max-md:text-center md:col-span-5">
+          <LogoFull className="h-28 w-auto text-hueso max-md:mx-auto" />
           <p className="mt-5 text-[0.9375rem]">{t("by")}</p>
-          <p className="display mt-4 max-w-[26ch] text-[1.25rem] leading-snug">{t("tagline")}</p>
+          <p className="display mt-4 max-w-[26ch] text-[1.25rem] leading-snug max-md:mx-auto">{t("tagline")}</p>
         </div>
-        <nav aria-label={t("linksTitle")} className="md:col-span-3">
+        <nav aria-label={t("linksTitle")} className="max-md:text-center md:col-span-3">
           <p className="t-label text-tierra-300">{t("linksTitle")}</p>
-          <ul className="mt-4 grid gap-1">
+          <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-1 max-md:[&>li:last-child:nth-child(odd)]:col-span-2 md:grid-cols-1">
             {SECTIONS.map((s) => (
               <li key={s.id}>
-                <Link href={{ pathname: "/", hash: s.id }} className="inline-flex min-h-9 items-center hover:underline">
+                <Link href={{ pathname: "/", hash: s.id }} className="inline-flex min-h-9 items-center hover:underline max-md:justify-center">
                   {tn(s.key)}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <div className="md:col-span-4">
+        <div className="max-md:text-center md:col-span-4">
           <p className="t-label text-tierra-300">{t("contactTitle")}</p>
-          <ul className="mt-4 grid gap-1">
+          <ul className="mt-4 grid justify-items-start gap-1 max-md:justify-items-center">
             <li>
               <a href={whatsappLink(tw("general"))} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center hover:underline">
                 {t("whatsappLabel")}: <span className="num ml-1">{site.whatsappDisplay}</span>
               </a>
             </li>
-            <li className="inline-flex min-h-9 items-center">{t("address")}</li>
+            <li className="inline-flex min-h-9 items-center justify-center">{t("address")}</li>
             <li>
               <Link href="/aviso-de-privacidad" className="inline-flex min-h-9 items-center hover:underline">
                 {t("privacy")}
@@ -52,8 +52,8 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-hueso/20">
-        <div className="wrap py-6 pb-24 md:pb-6">
-          <p className="t-small max-w-[110ch] text-hueso/90">{t("disclaimer")}</p>
+        <div className="wrap py-6 pb-24 max-md:text-center md:pb-6">
+          <p className="t-small max-w-[110ch] text-hueso/90 max-md:mx-auto">{t("disclaimer")}</p>
           <p className="t-small mt-3 text-hueso/90">{t("copyright", { year: new Date().getFullYear() })}</p>
           <p className="t-small mt-1 text-hueso/90">
             {t("madeBy")}{" "}
