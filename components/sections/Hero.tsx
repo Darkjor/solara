@@ -18,11 +18,16 @@ export function Hero() {
   // Render nocturno de la fachada (vertical, 1478x2170); en escritorio se recorta en banda. Es la imagen LCP.
   const { props: night } = getImageProps({ alt: t("imageAlt"), fill: true, priority: true, quality: 80, src: "/img/render-fachada-4-vertical.webp", sizes: "100vw" });
 
+  // Escritorio: la foto vertical se ve completa al centro y los lados se rellenan con ella misma desenfocada (sin zoom).
+  const { props: soft } = getImageProps({ alt: "", width: 480, height: 705, quality: 40, src: "/img/render-fachada-4-vertical.webp", sizes: "480px" });
+
   return (
     <section id="inicio" data-scene="hero" className="hero on-dark relative bg-selva-950 text-hueso">
       <div data-hero-stage className="hero-stage relative isolate min-h-[100svh] overflow-hidden">
         <div className="hero-layer absolute inset-0 -z-10 bg-selva-950">
-          <img {...night} alt={t("imageAlt")} className="hero-img object-cover object-[50%_42%] md:object-[50%_38%]" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={soft.src} alt="" aria-hidden loading="lazy" decoding="async" className="absolute inset-0 size-full scale-110 object-cover opacity-60 blur-2xl max-md:hidden" />
+          <img {...night} alt={t("imageAlt")} className="hero-img object-cover object-[50%_42%] md:object-contain md:object-center" />
         </div>
         <div className="hero-scrim pointer-events-none absolute inset-0 -z-10">
           <div className="scrim-left absolute inset-0 max-md:hidden" />
